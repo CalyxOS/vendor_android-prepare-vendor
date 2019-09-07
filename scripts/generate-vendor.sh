@@ -1139,8 +1139,13 @@ DEVICE=$(get_device_codename "$INPUT_DIR/system/build.prop")
 DEVICE_FAMILY="$(jqRawStrTop "device-family" "$CONFIG_FILE")"
 VENDOR=$(get_vendor "$INPUT_DIR/system/build.prop")
 VENDOR_DIR="$(jqRawStrTop "aosp-vendor-dir" "$CONFIG_FILE")"
-RADIO_VER=$(get_radio_ver "$INPUT_DIR/system/build.prop")
-BOOTLOADER_VER=$(get_bootloader_ver "$INPUT_DIR/system/build.prop")
+if [[ "$API_LEVEL" -ge 29 ]]; then
+  RADIO_VER=$(get_radio_ver "$INPUT_DIR/vendor/build.prop")
+  BOOTLOADER_VER=$(get_bootloader_ver "$INPUT_DIR/vendor/build.prop")
+else
+  RADIO_VER=$(get_radio_ver "$INPUT_DIR/system/build.prop")
+  BOOTLOADER_VER=$(get_bootloader_ver "$INPUT_DIR/system/build.prop")
+fi
 BUILD_ID=$(get_build_id "$INPUT_DIR/system/build.prop")
 if [[ "$EXTRA_IMGS_LIST" != "" ]]; then
   readarray -t EXTRA_IMGS < <(echo "$EXTRA_IMGS_LIST")
