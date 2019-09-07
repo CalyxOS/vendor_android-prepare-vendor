@@ -40,7 +40,6 @@ readonly D_OATDUMP_URL_API28='https://onedrive.live.com/download?cid=D1FAC8CC6BE
 readonly L_OATDUMP_URL_API29='https://onedrive.live.com/download?cid=D1FAC8CC6BE2C2B0&resid=D1FAC8CC6BE2C2B0%21574&authkey=ADSQA_DtfAmmk2c'
 readonly D_OATDUMP_URL_API29='https://onedrive.live.com/download?cid=D1FAC8CC6BE2C2B0&resid=D1FAC8CC6BE2C2B0%21582&authkey=ABMMORAJ-GGjs2k'
 
-
 readonly L_OATDUMP_API23_SIG='688f1c1f97e3b9eb32702c60ca05abbf313bc98a25334aa3ed4a108095162244'
 readonly D_OATDUMP_API23_SIG='688f1c1f97e3b9eb32702c60ca05abbf313bc98a25334aa3ed4a108095162244'
 readonly L_OATDUMP_API24_SIG='1f99e7d0f2894cfe52fb7f2a24d5076f217977cbb1a46fafdf5ea38b0a11adce'
@@ -81,6 +80,7 @@ declare -ra VENDOR_SKIP_FILES=(
   "overlay/DisplayCutoutNoCutout/NoCutoutOverlay.apk"
   "overlay/framework-res__auto_generated_rro.apk"
   "overlay/SysuiDarkTheme/SysuiDarkThemeOverlay.apk"
+  "overlay/framework-res__auto_generated_rro_vendor.apk"
 )
 
 # Files to skip from vendor partition when parsing factory images (for naked config only)
