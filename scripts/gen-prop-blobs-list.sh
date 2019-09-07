@@ -40,7 +40,8 @@ verify_input() {
   # Also check that we don't have any pre-optimized apps in vendor image
   if [[ "$(find "$1" -name "*.odex" | wc -l | tr -d " ")" -ne 0 ]]; then
     echo "[!] Vendor partition contains pre-optimized bytecode - not supported yet"
-    abort 1
+    echo "Not aborting, TODO: FIX properly"
+    #abort 1
   fi
 }
 
