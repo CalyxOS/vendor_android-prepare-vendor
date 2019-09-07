@@ -70,7 +70,7 @@ verify_input() {
 get_device_codename() {
   local device=""
 
-  device=$(grep 'ro.product.device=' "$1" | cut -d '=' -f2 | \
+  device=$(grep 'ro.build.product=' "$1" | cut -d '=' -f2 | \
            tr '[:upper:]' '[:lower:]' || true)
   if [[ "$device" == "" ]]; then
     echo "[-] Device string not found"
@@ -82,7 +82,7 @@ get_device_codename() {
 get_vendor() {
   local vendor=""
 
-  vendor=$(grep 'ro.product.manufacturer=' "$1" | cut -d '=' -f2 | \
+  vendor=$(grep 'ro.product.*manufacturer=' "$1" | cut -d '=' -f2 | \
            tr '[:upper:]' '[:lower:]' || true)
   if [[ "$vendor" == "" ]]; then
     echo "[-] Device codename string not found"
