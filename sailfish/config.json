@@ -191,7 +191,8 @@
         "PRODUCT_PROPERTY_OVERRIDES += \\",
         "    ro.hardware.egl=adreno \\",
         "    ro.hardware.fingerprint=fpc"
-      ]
+      ],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -230,7 +231,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   },
   "api-26": {
@@ -277,7 +279,8 @@
         "PRODUCT_PROPERTY_OVERRIDES += \\",
         "    ro.hardware.egl=adreno \\",
         "    ro.hardware.fingerprint=fpc"
-      ]
+      ],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "overlays-api26-full",
@@ -348,7 +351,8 @@
         "    ro.wallpapers_loc_request_suw=true \\",
         "    ro.opa.eligible_device=true \\",
         "    ro.storage_manager.enabled=true"
-      ]
+      ],
+      "vendor-skip-files": []
     }
   },
   "api-27": {
@@ -405,7 +409,8 @@
         "    ro.hardware.egl=adreno \\",
         "    ro.hardware.fingerprint=fpc \\",
         "    ro.control_privapp_permissions=enforce"
-      ]
+      ],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "overlays-api26-full",
@@ -477,7 +482,8 @@
         "    ro.wallpapers_loc_request_suw=true \\",
         "    ro.opa.eligible_device=true \\",
         "    ro.storage_manager.enabled=true"
-      ]
+      ],
+      "vendor-skip-files": []
     }
   },
   "api-28": {
@@ -536,7 +542,8 @@
       "device-vendor": [
         "PRODUCT_PROPERTY_OVERRIDES += \\",
         "    ro.control_privapp_permissions=enforce"
-      ]
+      ],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "overlays-api26-full",
@@ -615,7 +622,8 @@
         "    ro.opa.eligible_device=true \\",
         "    ro.storage_manager.enabled=true \\",
         "    ro.boot.vendor.overlay.theme=com.google.android.theme.pixel"
-      ]
+      ],
+      "vendor-skip-files": []
     }
   }
 }

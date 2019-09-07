@@ -23,7 +23,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -33,7 +34,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   },
   "api-24": {
@@ -49,7 +51,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -59,7 +62,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   },
   "api-25": {
@@ -75,7 +79,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -85,7 +90,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   }
 }

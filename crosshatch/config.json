@@ -211,7 +211,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -272,7 +273,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   }
 }

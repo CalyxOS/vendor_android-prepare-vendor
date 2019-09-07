@@ -123,7 +123,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -142,7 +143,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   },
   "api-24": {
@@ -285,7 +287,8 @@
         "    device/lge/bullhead/fstab.bullhead:root/fstab.bullhead \\",
         "    $(PRODUCT_COPY_FILES)"
       ],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -311,7 +314,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   },
   "api-25": {
@@ -455,7 +459,8 @@
         "    device/lge/bullhead/fstab.bullhead:root/fstab.bullhead \\",
         "    $(PRODUCT_COPY_FILES)"
       ],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -480,7 +485,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   },
   "api-26": {
@@ -604,7 +610,8 @@
         "    device/lge/bullhead/fstab.bullhead:root/fstab.bullhead \\",
         "    $(PRODUCT_COPY_FILES)"
       ],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "overlays-api26-full",
@@ -631,7 +638,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   },
   "api-27": {
@@ -755,7 +763,8 @@
         "    device/lge/bullhead/fstab.bullhead:root/fstab.bullhead \\",
         "    $(PRODUCT_COPY_FILES)"
       ],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "overlays-api26-full",
@@ -782,7 +791,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   }
 }

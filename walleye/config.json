@@ -93,7 +93,8 @@
         "    ro.gfx.driver.0=com.google.pixel.wahoo.gfxdrv \\",
         "    ro.oem_unlock.pst=/dev/block/platform/soc/1da4000.ufshc/by-name/misc \\",
         "    ro.oem_unlock.pst_offset=6144"
-      ]
+      ],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -161,7 +162,8 @@
         "    ro.facelock.det_timeout=2500 \\",
         "    ro.facelock.rec_timeout=3500 \\",
         "    ro.facelock.est_max_time=600"
-      ]
+      ],
+      "vendor-skip-files": []
     }
   },
   "api-27": {
@@ -232,7 +234,8 @@
         "    ro.gfx.driver.0=com.google.pixel.wahoo.gfxdrv \\",
         "    ro.oem_unlock.pst=/dev/block/platform/soc/1da4000.ufshc/by-name/misc \\",
         "    ro.oem_unlock.pst_offset=6144"
-      ]
+      ],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -301,7 +304,8 @@
         "    ro.facelock.det_timeout=2500 \\",
         "    ro.facelock.rec_timeout=3500 \\",
         "    ro.facelock.est_max_time=600"
-      ]
+      ],
+      "vendor-skip-files": []
     }
   },
   "api-28": {
@@ -385,7 +389,8 @@
         "    ro.gfx.driver.0=com.google.pixel.wahoo.gfxdrv \\",
         "    ro.oem_unlock.pst=/dev/block/platform/soc/1da4000.ufshc/by-name/misc \\",
         "    ro.oem_unlock.pst_offset=6144"
-      ]
+      ],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -456,7 +461,8 @@
         "    ro.facelock.det_timeout=2500 \\",
         "    ro.facelock.rec_timeout=3500 \\",
         "    ro.facelock.est_max_time=600"
-      ]
+      ],
+      "vendor-skip-files": []
     }
   }
 }

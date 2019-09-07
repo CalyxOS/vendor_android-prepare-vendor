@@ -129,6 +129,12 @@ do
     fi
   fi
 
+  # Skip vendor files for specific APIs if they are defined
+  readarray -t vendorSkipFiles < <(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "vendor-skip-files" "$CONFIG_FILE")
+  if array_contains "$FILE" "${vendorSkipFiles[@]}"; then
+    continue
+  fi
+
   echo "vendor/$FILE" >> "$OUT_BLOBS_FILE_TMP"
 done
 

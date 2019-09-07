@@ -146,7 +146,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -168,7 +169,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   },
   "api-24": {
@@ -272,7 +274,8 @@
         "    device/huawei/angler/fstab.angler:root/fstab.angler \\",
         "    $(PRODUCT_COPY_FILES)"
       ],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -299,7 +302,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   },
   "api-25": {
@@ -403,7 +407,8 @@
         "    device/huawei/angler/fstab.angler:root/fstab.angler \\",
         "    $(PRODUCT_COPY_FILES)"
       ],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -429,7 +434,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   },
   "api-26": {
@@ -532,7 +538,8 @@
         "    device/huawei/angler/fstab.angler:root/fstab.angler \\",
         "    $(PRODUCT_COPY_FILES)"
       ],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -560,7 +567,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   },
 "api-27": {
@@ -664,7 +672,8 @@
         "    device/huawei/angler/fstab.angler:root/fstab.angler \\",
         "    $(PRODUCT_COPY_FILES)"
       ],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     },
     "full": {
       "overlays-dir": "",
@@ -692,7 +701,8 @@
       "new-modules": [],
       "dep-dso": [],
       "BoardConfigVendor": [],
-      "device-vendor": []
+      "device-vendor": [],
+      "vendor-skip-files": []
     }
   }
 }
