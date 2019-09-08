@@ -390,7 +390,9 @@ gen_board_cfg_mk() {
   {
     echo "TARGET_BOARD_INFO_FILE := vendor/$VENDOR_DIR/$DEVICE/vendor-board-info.txt"
     echo 'BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4'
-    echo "BOARD_VENDORIMAGE_PARTITION_SIZE := $v_img_sz"
+    echo 'ifneq ($(PRODUCT_USE_DYNAMIC_PARTITIONS), true)'
+    echo "  BOARD_VENDORIMAGE_PARTITION_SIZE := $v_img_sz"
+    echo 'endif'
 
     # Update with user selected extra flags
     echo "$MK_FLAGS_LIST"
