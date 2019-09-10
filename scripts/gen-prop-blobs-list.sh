@@ -147,6 +147,9 @@ done
 
   # Then append bytecode-proprietary
   jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "system-bytecode" "$CONFIG_FILE" | grep -Ev '(^#|^$)' || true
+
+  # Then append product
+  jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "product-other" "$CONFIG_FILE" | grep -Ev '(^#|^$)' || true
 } >> "$OUT_BLOBS_FILE_TMP"
 
 # Sort merged file with all lists

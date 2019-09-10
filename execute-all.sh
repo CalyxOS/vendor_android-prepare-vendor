@@ -42,6 +42,7 @@ abort() {
   if [[ $1 -ne 0 && "$FACTORY_IMGS_DATA" != "" ]]; then
     unmount_raw_image "$FACTORY_IMGS_DATA/system"
     unmount_raw_image "$FACTORY_IMGS_DATA/vendor"
+    unmount_raw_image "$FACTORY_IMGS_DATA/product"
   fi
   rm -rf "$TMP_WORK_DIR"
   exit "$1"
@@ -522,6 +523,9 @@ if [ -d "$FACTORY_IMGS_DATA" ]; then
   if mount | grep -q "$FACTORY_IMGS_DATA/vendor"; then
     unmount_raw_image "$FACTORY_IMGS_DATA/vendor"
   fi
+  if mount | grep -q "$FACTORY_IMGS_DATA/product"; then
+    unmount_raw_image "$FACTORY_IMGS_DATA/product"
+  fi
   rm -rf "${FACTORY_IMGS_DATA:?}"/*
 else
   mkdir -p "$FACTORY_IMGS_DATA"
@@ -669,15 +673,21 @@ $REPAIR_SCRIPT --method "$BYTECODE_REPAIR_METHOD" --input "$SYSTEM_ROOT" \
   abort 1
 }
 
-# Bytecode under vendor partition doesn't require repair (at least for now)
+# Bytecode under vendor or product partition doesn't require repair (at least for now)
 # However, make it available to repaired data directory to have a single source
 # for next script
 ln -s "$FACTORY_IMGS_DATA/vendor" "$FACTORY_IMGS_R_DATA/vendor"
+if [[ -d "$FACTORY_IMGS_DATA/product" ]]; then
+  ln -s "$FACTORY_IMGS_DATA/product" "$FACTORY_IMGS_R_DATA/product"
+fi
 
-# Copy vendor partition image size as saved from $EXTRACT_SCRIPT script
+# Copy vendor and product partition image size as saved from $EXTRACT_SCRIPT script
 # $VGEN_SCRIPT will fail over to last known working default if image size
 # file not found when parsing data
 cp "$FACTORY_IMGS_DATA/vendor_partition_size" "$FACTORY_IMGS_R_DATA"
+if [[ -f "$FACTORY_IMGS_DATA/product_partition_size" ]]; then
+  cp "$FACTORY_IMGS_DATA/product_partition_size" "$FACTORY_IMGS_R_DATA"
+fi
 
 # Make radio files available to vendor generate script
 ln -s "$FACTORY_IMGS_DATA/radio" "$FACTORY_IMGS_R_DATA/radio"
@@ -707,6 +717,7 @@ if [ "$KEEP_DATA" = false ]; then
     # Mount points are present only when ext4fuse is used
     unmount_raw_image "$FACTORY_IMGS_DATA/system"
     unmount_raw_image "$FACTORY_IMGS_DATA/vendor"
+    unmount_raw_image "$FACTORY_IMGS_DATA/product"
   fi
   rm -rf "$FACTORY_IMGS_DATA"
   rm -rf "$FACTORY_IMGS_R_DATA"

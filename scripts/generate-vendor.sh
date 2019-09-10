@@ -61,6 +61,7 @@ _EOF
 }
 
 verify_input() {
+  # Not checking for product here yet since it may not be present on all devices
   if [[ ! -d "$1/vendor" || ! -d "$1/system" || ! -d "$1/radio" || \
         ! -f "$1/system/build.prop" ]]; then
     echo "[-] Invalid input directory structure"
@@ -119,13 +120,21 @@ get_build_id() {
   echo "$build_id"
 }
 
-has_vendor_size() {
-  local search_file="$1/vendor_partition_size"
+has_partition_size() {
+  local search_file="$2/${1}_partition_size"
   if [ -f "$search_file" ]; then
     cat "$search_file"
   else
     echo ""
   fi
+}
+
+has_vendor_size() {
+  has_partition_size vendor "$1"
+}
+
+has_product_size() {
+  has_partition_size product "$1"
 }
 
 read_invalid_symlink() {
@@ -165,6 +174,7 @@ extract_blobs() {
   local inDir="$2"
   local outDir_prop="$3/proprietary"
   local outDir_vendor="$3/vendor"
+  local outDir_product="$3/product"
 
   local src="" dst="" dstDir="" outBase="" outPath="" openTag=""
 
@@ -195,13 +205,16 @@ extract_blobs() {
     fi
 
     # Files under /system go to $outDir_prop, while files from /vendor
-    # to $outDir_vendor
+    # to $outDir_vendor, and files from /product to $outDir_product
     if [[ $src == system/* ]]; then
       outBase=$outDir_prop
       dst=$(echo "$dst" | sed 's#^system/##')
     elif [[ $src == vendor/* ]]; then
       outBase=$outDir_vendor
       dst=$(echo "$dst" | sed 's#^vendor/##')
+    elif [[ $src == product/* ]]; then
+      outBase=$outDir_product
+      dst=$(echo "$dst" | sed 's#^product/##')
     else
       echo "[-] Invalid path detected at '$blobsList' ($src)"
       abort 1
@@ -241,6 +254,7 @@ update_vendor_blobs_mk() {
 
   local relDir_prop="vendor/$VENDOR_DIR/$DEVICE/proprietary"
   local relDir_vendor="vendor/$VENDOR_DIR/$DEVICE/vendor"
+  local relDir_product="vendor/$VENDOR_DIR/$DEVICE/product"
 
   local src="" srcRelDir="" dst="" dstRelDir="" fileExt="" dstMk=""
 
@@ -283,6 +297,9 @@ update_vendor_blobs_mk() {
     elif [[ $src == vendor/* ]]; then
       srcRelDir=$relDir_vendor
       src=$(echo "$src" | sed 's#^vendor/##')
+    elif [[ $src == product/* ]]; then
+      srcRelDir=$relDir_product
+      src=$(echo "$src" | sed 's#^product/##')
     else
       echo "[-] Invalid src path detected at '$blobsList'"
       abort 1
@@ -294,6 +311,10 @@ update_vendor_blobs_mk() {
     elif [[ $dst == vendor/* ]]; then
       dstRelDir='$(TARGET_COPY_OUT_VENDOR)'
       dst=$(echo "$dst" | sed 's#^vendor/##')
+      dstMk="$BOARD_CONFIG_VENDOR_MK"
+    elif [[ $dst == product/* ]]; then
+      dstRelDir='$(TARGET_COPY_OUT_PRODUCT)'
+      dst=$(echo "$dst" | sed 's#^product/##')
       dstMk="$BOARD_CONFIG_VENDOR_MK"
     else
       echo "[-] Invalid dst path detected at '$blobsList'"
@@ -378,6 +399,7 @@ gen_board_vendor_mk() {
 gen_board_cfg_mk() {
   local inDir="$1"
   local v_img_sz
+  local p_img_sz
 
   # First lets check if vendor partition size has been extracted from
   # previous data extraction script
@@ -387,12 +409,27 @@ gen_board_cfg_mk() {
     abort 1
   fi
 
+  # Then lets check if product partition size has been extracted from
+  # previous data extraction script
+  p_img_sz="$(has_product_size "$inDir")"
+  if [[ "$p_img_sz" == "" ]]; then
+    echo "[!] Unknown product image size for '$DEVICE' device"
+  fi
+
   {
     echo "TARGET_BOARD_INFO_FILE := vendor/$VENDOR_DIR/$DEVICE/vendor-board-info.txt"
     echo 'BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4'
     echo 'ifneq ($(PRODUCT_USE_DYNAMIC_PARTITIONS), true)'
     echo "  BOARD_VENDORIMAGE_PARTITION_SIZE := $v_img_sz"
     echo 'endif'
+    if [[ "$p_img_sz" != "" ]]; then
+      echo 'ifneq ($(PRODUCT_NO_PRODUCT_PARTITION), true)'
+      echo '  ifneq ($(PRODUCT_USE_DYNAMIC_PARTITIONS), true)'
+      echo "    BOARD_PRODUCTIMAGE_PARTITION_SIZE := $p_img_sz"
+      echo '  endif'
+      echo '  BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4'
+      echo 'endif'
+    fi
 
     # Update with user selected extra flags
     echo "$MK_FLAGS_LIST"

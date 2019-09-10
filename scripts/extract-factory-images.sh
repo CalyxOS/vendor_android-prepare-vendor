@@ -60,20 +60,28 @@ extract_archive() {
   fi
 }
 
-extract_vendor_partition_size() {
-  local vendor_img_raw="$1"
-  local out_file="$2/vendor_partition_size"
+extract_partition_size() {
+  local partition_img_raw="$2"
+  local out_file="$3/${1}_partition_size"
   local size=""
 
-  size="$((du -b "$vendor_img_raw" || stat -f %z "$vendor_img_raw" || echo "") 2>/dev/null | tr '\t' ' ' | cut -d' ' -f1)"
+  size="$((du -b "$partition_img_raw" || stat -f %z "$partition_img_raw" || echo "") 2>/dev/null | tr '\t' ' ' | cut -d' ' -f1)"
   if [[ "$size" == "" ]]; then
-    echo "[!] Failed to extract vendor partition size from '$vendor_img_raw'"
+    echo "[!] Failed to extract vendor partition size from '$partition_img_raw'"
     abort 1
   fi
 
   # Write to file so that 'generate-vendor.sh' can pick the value
   # for BoardConfigVendor makefile generation
   echo "$size" > "$out_file"
+}
+
+extract_vendor_partition_size() {
+  extract_partition_size vendor "$1" "$2"
+}
+
+extract_product_partition_size() {
+  extract_partition_size product "$1" "$2"
 }
 
 mount_darwin() {
@@ -288,6 +296,11 @@ if [ -d "$VENDOR_DATA_OUT" ]; then
   rm -rf "${VENDOR_DATA_OUT:?}"/*
 fi
 
+PRODUCT_DATA_OUT="$OUTPUT_DIR/product"
+if [ -d "$PRODUCT_DATA_OUT" ]; then
+  rm -rf "${PRODUCT_DATA_OUT:?}"/*
+fi
+
 RADIO_DATA_OUT="$OUTPUT_DIR/radio"
 if [ -d "$RADIO_DATA_OUT" ]; then
   rm -rf "${RADIO_DATA_OUT:?}"/*
@@ -303,9 +316,14 @@ mkdir -p "$extractDir"
 # Extract archive
 extract_archive "$INPUT_ARCHIVE" "$extractDir"
 
+hasProductImg=false
 if [[ -f "$extractDir/system.img" && -f "$extractDir/vendor.img" ]]; then
   sysImg="$extractDir/system.img"
   vImg="$extractDir/vendor.img"
+  if [[ -f "$extractDir/product.img" ]]; then
+    pImg="$extractDir/product.img"
+    hasProductImg=true
+  fi
 else
   updateArch=$(find "$extractDir" -iname "image-*.zip" | head -n 1)
   echo "[*] Unzipping '$(basename "$updateArch")'"
@@ -315,6 +333,10 @@ else
   }
   sysImg="$extractDir/images/system.img"
   vImg="$extractDir/images/vendor.img"
+  if [[ -f "$extractDir/images/product.img" ]]; then
+    pImg="$extractDir/images/product.img"
+    hasProductImg=true
+  fi
 fi
 
 # Baseband image
@@ -335,6 +357,7 @@ fi
 # Convert from sparse to raw
 rawSysImg="$extractDir/images/system.img.raw"
 rawVImg="$extractDir/images/vendor.img.raw"
+rawPImg="$extractDir/images/product.img.raw"
 
 simg2img "$sysImg" "$rawSysImg" || {
   echo "[-] simg2img failed to convert system.img from sparse"
@@ -344,18 +367,33 @@ simg2img "$vImg" "$rawVImg" || {
   echo "[-] simg2img failed to convert vendor.img from sparse"
   abort 1
 }
+if [ $hasProductImg = true ]; then
+  simg2img "$pImg" "$rawPImg" || {
+    echo "[-] simg2img failed to convert product.img from sparse"
+    abort 1
+  }
+fi
 
 # Save raw vendor img partition size
 extract_vendor_partition_size "$rawVImg" "$OUTPUT_DIR"
+if [ $hasProductImg = true ]; then
+  extract_product_partition_size "$rawPImg" "$OUTPUT_DIR"
+fi
 
 if [ "$USE_DEBUGFS" = true ]; then
-  # Extract raw system and vendor images. Data will be processed later
+  # Extract raw system, vendor and product images. Data will be processed later
   extract_img_data "$rawSysImg" "$SYSTEM_DATA_OUT"
   extract_img_data "$rawVImg" "$VENDOR_DATA_OUT"
+  if [ $hasProductImg = true ]; then
+    extract_img_data "$rawPImg" "$PRODUCT_DATA_OUT"
+  fi
 else
-  # Mount raw system and vendor images. Data will be processed later
+  # Mount raw system, vendor and product images. Data will be processed later
   mount_img "$rawSysImg" "$SYSTEM_DATA_OUT"
   mount_img "$rawVImg" "$VENDOR_DATA_OUT"
+  if [ $hasProductImg = true ]; then
+    mount_img "$rawPImg" "$PRODUCT_DATA_OUT"
+  fi
 fi
 
 # Copy bootloader & radio images
