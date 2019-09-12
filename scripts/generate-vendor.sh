@@ -672,7 +672,11 @@ gen_mk_for_bytecode() {
 
     # Adjust APK/JAR specifics
     if [[ "$fileExt" == "jar" ]]; then
-      src="$relRoot/$relSubRoot/$zipName"
+      if [ ! -z "${relPkgDir}" ]; then
+        src="$relRoot/$relSubRoot/$relPkgDir/$zipName"
+      else
+        src="$relRoot/$relSubRoot/$zipName"
+      fi
       class='JAVA_LIBRARIES'
       suffix='$(COMMON_JAVA_PACKAGE_SUFFIX)'
     elif [[ "$fileExt" == "apk" ]]; then
