@@ -595,12 +595,26 @@ gen_standalone_symlinks() {
 
   if [ ! -z "${pkgs_SSLinks-}" ]; then
     {
-      echo "# Standalone symbolic links"
-      echo 'PRODUCT_PACKAGES += \'
+      echo -e "\ninclude \$(CLEAR_VARS)"
+      echo 'LOCAL_MODULE := apv_file_signatures'
+      echo 'LOCAL_MODULE_CLASS := ETC'
+      echo 'LOCAL_MODULE_TAGS := optional'
+      echo -e "LOCAL_MODULE_OWNER := $VENDOR"
+      echo 'LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)'
+      echo 'LOCAL_MODULE_STEM := file_signatures.txt'
+      echo 'LOCAL_SRC_FILES := file_signatures.txt'
+      echo 'LOCAL_REQUIRED_MODULES := \'
       for module in "${pkgs_SSLinks[@]}"
       do
         echo "    $module \\"
       done
+    } >> "$ANDROID_MK"
+    strip_trail_slash_from_file "$ANDROID_MK"
+    echo 'include $(BUILD_PREBUILT)' >> "$ANDROID_MK"
+    {
+      echo "# Standalone symbolic links"
+      echo 'PRODUCT_PACKAGES += \'
+      echo -e "    apv_file_signatures\n"
     } >> "$DEVICE_VENDOR_MK"
   fi
   strip_trail_slash_from_file "$DEVICE_VENDOR_MK"
