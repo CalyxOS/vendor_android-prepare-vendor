@@ -167,6 +167,13 @@ copy_radio_files() {
       cp "$inDir/radio/$img.img" "$outDir/radio/"
     done
   fi
+
+  if [[ "$VENDOR" == "google" && "$OTA_IMGS_LIST" != "" ]]; then
+    for img in "${OTA_IMGS[@]}"
+    do
+      cp "$inDir/radio/$img.img" "$outDir/radio/"
+    done
+  fi
 }
 
 extract_blobs() {
@@ -389,6 +396,13 @@ gen_board_vendor_mk() {
 
     if [[ "$VENDOR" == "google" && "$EXTRA_IMGS_LIST" != "" ]]; then
       for img in "${EXTRA_IMGS[@]}"
+      do
+        echo "\$(call add-radio-file,radio/$img.img)"
+      done
+    fi
+
+    if [[ "$VENDOR" == "google" && "$OTA_IMGS_LIST" != "" ]]; then
+      for img in "${OTA_IMGS[@]}"
       do
         echo "\$(call add-radio-file,radio/$img.img)"
       done
@@ -983,6 +997,10 @@ update_ab_ota_partitions() {
     do
       echo "    $partition \\"
     done
+    for partition in "${OTA_IMGS[@]}"
+    do
+      echo "    $partition \\"
+    done
   }  >> "$outMk"
   strip_trail_slash_from_file "$outMk"
 }
@@ -1177,6 +1195,7 @@ readonly DEVICE_VENDOR_CONFIG="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "devi
 readonly EXTRA_MODULES="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "new-modules" "$CONFIG_FILE")"
 readonly FORCE_MODULES="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "forced-modules" "$CONFIG_FILE")"
 readonly EXTRA_IMGS_LIST="$(jqIncRawArrayTop "extra-partitions" "$CONFIG_FILE")"
+readonly OTA_IMGS_LIST="$(jqIncRawArrayTop "ota-partitions" "$CONFIG_FILE")"
 
 # Populate the array with the APK that need to maintain their signature
 readarray -t PSIG_BC_FILES < <(
@@ -1202,6 +1221,9 @@ fi
 BUILD_ID=$(get_build_id "$INPUT_DIR/system/build.prop")
 if [[ "$EXTRA_IMGS_LIST" != "" ]]; then
   readarray -t EXTRA_IMGS < <(echo "$EXTRA_IMGS_LIST")
+fi
+if [[ "$OTA_IMGS_LIST" != "" ]]; then
+  readarray -t OTA_IMGS < <(echo "$OTA_IMGS_LIST")
 fi
 
 

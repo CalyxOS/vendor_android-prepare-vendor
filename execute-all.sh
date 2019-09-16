@@ -25,6 +25,9 @@ readonly DOWNLOAD_SCRIPT="$SCRIPTS_ROOT/scripts/download-nexus-image.sh"
 # Helper script to extract system & vendor images data
 readonly EXTRACT_SCRIPT="$SCRIPTS_ROOT/scripts/extract-factory-images.sh"
 
+# Helper script to extract ota data
+readonly OTA_SCRIPT="$SCRIPTS_ROOT/scripts/extract-ota.sh"
+
 # Helper script to generate "proprietary-blobs.txt" file
 readonly GEN_BLOBS_LIST_SCRIPT="$SCRIPTS_ROOT/scripts/gen-prop-blobs-list.sh"
 
@@ -341,6 +344,7 @@ USE_FUSEEXT2=false
 FORCE_VIMG=false
 JAVA_FOUND=false
 TIMESTAMP=""
+OTA=false
 
 # Compatibility
 check_bash_version
@@ -477,6 +481,7 @@ if [ ! -d "$OUT_BASE" ]; then
 fi
 FACTORY_IMGS_DATA="$OUT_BASE/factory_imgs_data"
 FACTORY_IMGS_R_DATA="$OUT_BASE/factory_imgs_repaired_data"
+OTA_DATA="$OUT_BASE/ota_data"
 echo "[*] Setting output base to '$OUT_BASE'"
 
 # Download images if not provided
@@ -502,15 +507,57 @@ if [[ "$INPUT_IMG" == "" ]]; then
     echo "[-] Images download failed"
     abort 1
   }
-  factoryImgArchive="$(find "$OUT_BASE" -iname "*$DEV_ALIAS*$BUILDID*.tgz" -or \
-                       -iname "*$DEV_ALIAS*$BUILDID*.zip" | head -1)"
+  factoryImgArchive="$(find "$OUT_BASE" -iname "*$DEV_ALIAS*$BUILDID-factory*.tgz" -or \
+                       -iname "*$DEV_ALIAS*$BUILDID-factory*.zip" | head -1)"
 else
   factoryImgArchive="$INPUT_IMG"
+fi
+
+readonly OTA_IMGS_LIST="$(jqIncRawArrayTop "ota-partitions" "$CONFIG_FILE")"
+if [[ "$OTA_IMGS_LIST" != "" ]]; then
+  OTA=true
+fi
+
+if [ "$OTA" = true ]; then
+OtaArchive=""
+if [[ "$INPUT_IMG" == "" ]]; then
+
+  # Factory image alias for devices with naming incompatibilities with AOSP
+  if [[ "$DEVICE" == "flounder" && "$DEV_ALIAS" == "" ]]; then
+    echo "[-] Building for flounder requires setting the device alias option - 'volantis' or 'volantisg'"
+    abort 1
+  fi
+  if [[ "$DEV_ALIAS" == "" ]]; then
+    DEV_ALIAS="$DEVICE"
+  fi
+
+  __extraArgs=""
+  if [ $AUTO_TOS_ACCEPT = true ]; then
+    __extraArgs="--yes"
+  fi
+
+ $DOWNLOAD_SCRIPT --device "$DEVICE" --alias "$DEV_ALIAS" \
+       --buildID "$BUILDID" --output "$OUT_BASE" $__extraArgs --ota || {
+    echo "[-] OTA download failed"
+    abort 1
+  }
+  OtaArchive="$(find "$OUT_BASE" -iname "*$DEV_ALIAS*ota-$BUILDID*.tgz" -or \
+                       -iname "*$DEV_ALIAS*ota-$BUILDID*.zip" | head -1)"
+else
+  OtaArchive="$INPUT_IMG"
+fi
 fi
 
 if [[ "$factoryImgArchive" == "" ]]; then
   echo "[-] Failed to locate factory image archive"
   abort 1
+fi
+
+if [ "$OTA" = true ]; then
+if [[ "$OtaArchive" == "" ]]; then
+  echo "[-] Failed to locate OTA archive"
+  abort 1
+fi
 fi
 
 # Clear old data if present & extract data from factory images
@@ -531,6 +578,12 @@ else
   mkdir -p "$FACTORY_IMGS_DATA"
 fi
 
+if [ -d "$OTA_DATA" ]; then
+  rm -rf "${OTA_DATA:?}"/*
+else
+  mkdir -p "$OTA_DATA"
+fi
+
 EXTRACT_SCRIPT_ARGS=(--input "$factoryImgArchive" --output "$FACTORY_IMGS_DATA")
 
 if [ "$USE_DEBUGFS" = true ]; then
@@ -543,6 +596,15 @@ $EXTRACT_SCRIPT "${EXTRACT_SCRIPT_ARGS[@]}" --conf-file "$CONFIG_FILE" || {
   echo "[-] Factory images data extract failed"
   abort 1
 }
+
+if [ "$OTA" = true ]; then
+OTA_SCRIPT_ARGS=(--input "$OtaArchive" --output "$OTA_DATA")
+
+$OTA_SCRIPT "${OTA_SCRIPT_ARGS[@]}" --conf-file "$CONFIG_FILE" || {
+  echo "[-] OTA data extract failed"
+  abort 1
+}
+fi
 
 # system.img contents are different between Nexus & Pixel
 SYSTEM_ROOT="$FACTORY_IMGS_DATA/system"
@@ -690,6 +752,9 @@ if [[ -f "$FACTORY_IMGS_DATA/product_partition_size" ]]; then
 fi
 
 # Make radio files available to vendor generate script
+if [[ -d "$OTA_DATA/radio" ]]; then
+  cp -r "$OTA_DATA/radio" "$FACTORY_IMGS_DATA/"
+fi
 ln -s "$FACTORY_IMGS_DATA/radio" "$FACTORY_IMGS_R_DATA/radio"
 
 VGEN_SCRIPT_EXTRA_ARGS=(--conf-type "$CONFIG_TYPE")
@@ -721,6 +786,7 @@ if [ "$KEEP_DATA" = false ]; then
   fi
   rm -rf "$FACTORY_IMGS_DATA"
   rm -rf "$FACTORY_IMGS_R_DATA"
+  rm -rf "$OTA_DATA"
 fi
 
 # If output dir is not AOSP SRC root print some user messages, otherwise the
