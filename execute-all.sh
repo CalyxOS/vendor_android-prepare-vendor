@@ -60,6 +60,7 @@ cat <<_EOF
       -b|--buildID <id>  : BuildID string (e.g. MMB29P)
       -o|--output <path> : Path to save generated vendor data
       -i|--img <path>    : [OPTIONAL] Read factory image archive from file instead of downloading
+      -O|--ota <path>    : [OPTIONAL] Read OTA image archive from file instead of downloading
       -j|--java <path    : [OPTIONAL] Java path to use instead of system auto detected global version
       -f|--full    : [OPTIONAL] Use config with all non-essential OEM blobs to be compatible with GApps (default: false)
       -k|--keep    : [OPTIONAL] Keep all extracted factory images & repaired data (default: false)
@@ -323,6 +324,7 @@ DEVICE=""
 BUILDID=""
 OUTPUT_DIR=""
 INPUT_IMG=""
+INPUT_OTA=""
 KEEP_DATA=false
 DEV_ALIAS=""
 API_LEVEL=""
@@ -374,6 +376,10 @@ do
       ;;
     -i|--imgs)
       INPUT_IMG="$(_realpath "$2")"
+      shift
+      ;;
+    -O|--ota)
+      INPUT_OTA="$(_realpath "$2")"
       shift
       ;;
     -f|--full)
@@ -520,7 +526,7 @@ fi
 
 if [ "$OTA" = true ]; then
 OtaArchive=""
-if [[ "$INPUT_IMG" == "" ]]; then
+if [[ "$INPUT_OTA" == "" ]]; then
 
   # Factory image alias for devices with naming incompatibilities with AOSP
   if [[ "$DEVICE" == "flounder" && "$DEV_ALIAS" == "" ]]; then
@@ -544,7 +550,7 @@ if [[ "$INPUT_IMG" == "" ]]; then
   OtaArchive="$(find "$OUT_BASE" -iname "*$DEV_ALIAS*ota-$BUILDID*.tgz" -or \
                        -iname "*$DEV_ALIAS*ota-$BUILDID*.zip" | head -1)"
 else
-  OtaArchive="$INPUT_IMG"
+  OtaArchive="$INPUT_OTA"
 fi
 fi
 
