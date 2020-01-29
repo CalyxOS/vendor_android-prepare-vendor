@@ -80,7 +80,9 @@
         "system_ext/framework/vendor.qti.hardware.data.latency-V1.0-java.jar",
         "system_ext/framework/vendor.qti.hardware.soter-V1.0-java.jar",
         "system_ext/framework/vendor.qti.ims.callinfo-V1.0-java.jar",
-        "system_ext/framework/vendor.qti.voiceprint-V1.0-java.jar"
+        "system_ext/framework/vendor.qti.voiceprint-V1.0-java.jar",
+        "system_ext/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED",
+        "system_ext/priv-app/EuiccSupportPixelPermissions/EuiccSupportPixelPermissions.apk::PRESIGNED"
       ],
       "system_ext-other": [
         "system_ext/lib/com.qualcomm.qti.imscmservice@1.0.so",
@@ -160,9 +162,13 @@
         "system_ext/lib64/vendor.qti.hardware.soter@1.0.so",
         "system_ext/lib64/vendor.qti.hardware.tui_comm@1.0.so",
         "system_ext/lib64/vendor.qti.ims.callinfo@1.0.so",
-        "system_ext/lib64/vendor.qti.imsrtpservice@1.0.so"
+        "system_ext/lib64/vendor.qti.imsrtpservice@1.0.so",
+        "system_ext/priv-app/EuiccSupportPixel/esim-full-v0.img",
+        "system_ext/priv-app/EuiccSupportPixel/esim-v1.img"
       ],
-      "product-bytecode": [],
+      "product-bytecode": [
+        "product/priv-app/EuiccGoogle/EuiccGoogle.apk::PRESIGNED"
+      ],
       "product-other": [
         "product/etc/apns-conf.xml",
         "product/lib/libdmengine.so",
