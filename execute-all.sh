@@ -726,6 +726,7 @@ esac
 if [ $DEODEX_ALL = false ]; then
   BYTECODE_LIST="$TMP_WORK_DIR/bytecode_list.txt"
   jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "system-bytecode" "$CONFIG_FILE" > "$BYTECODE_LIST"
+  jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "product-bytecode" "$CONFIG_FILE" >> "$BYTECODE_LIST"
   REPAIR_SCRIPT_ARG+=( --bytecode-list "$BYTECODE_LIST")
 fi
 

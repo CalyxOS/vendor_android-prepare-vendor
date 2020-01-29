@@ -660,6 +660,10 @@ gen_mk_for_bytecode() {
     origin="$inDir/system/$relSubRoot"
     lcMPath="\$(PRODUCT_OUT)/\$(TARGET_COPY_OUT_SYSTEM)/$relSubRoot"
     dsoRootBase="/system"
+  elif [[ "$relRoot" == "product" ]]; then
+    origin="$inDir/product/$relSubRoot"
+    lcMPath="\$(PRODUCT_OUT)/\$(TARGET_COPY_OUT_PRODUCT)/$relSubRoot"
+    dsoRootBase="/product"
   else
     echo "[-] Invalid '$relRoot' relative directory"
     abort 1
@@ -1037,7 +1041,7 @@ gen_android_mk() {
     echo "include vendor/$VENDOR_DIR/$DEVICE/AndroidBoardVendor.mk"
   } >> "$ANDROID_MK"
 
-  for root in "vendor" "proprietary"
+  for root in "vendor" "proprietary" "product"
   do
     for path in "${SUBDIRS_WITH_BC[@]}"
     do
