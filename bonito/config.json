@@ -517,6 +517,7 @@
         "system/lib64/vendor.qti.ims.callinfo@1.0.so",
         "system/lib64/vendor.qti.imsrtpservice@1.0.so"
       ],
+      "product-bytecode": [],
       "forced-modules": [],
       "new-modules": [],
       "dep-dso": [],
