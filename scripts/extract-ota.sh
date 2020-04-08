@@ -58,7 +58,7 @@ extract_archive() {
 extract_payload() {
   local otaFile="$1"
   local out_dir="$2"
-  python $EXTRACT_PAYLOAD_SCRIPT $out_dir/payload.bin $out_dir $otaFile
+  $EXTRACT_PAYLOAD_SCRIPT $out_dir/payload.bin $out_dir $otaFile
 }
 
 trap "abort 1" SIGINT SIGTERM
