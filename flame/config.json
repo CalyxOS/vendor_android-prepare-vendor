@@ -34,9 +34,13 @@
         "product/priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk",
         "product/framework/QtiTelephonyServicelibrary.jar",
         "product/framework/com.qualcomm.qti.uceservice-V2.1-java.jar",
-        "product/framework/qcrilhook.jar"
+        "product/framework/qcrilhook.jar",
+        "product/framework/qti-telephony-hidl-wrapper.jar",
+        "product/framework/qti-telephony-utils.jar"
       ],
       "product-other": [
+        "product/etc/permissions/qti_telephony_hidl_wrapper.xml",
+        "product/etc/permissions/qti_telephony_utils.xml",
         "product/etc/permissions/com.qualcomm.qcrilmsgtunnel.xml",
         "product/etc/permissions/com.qualcomm.qti.imscmservice-V2.0-java.xml",
         "product/etc/permissions/com.qualcomm.qti.imscmservice-V2.1-java.xml",
@@ -141,7 +145,6 @@
         "libnos_datagram_citadel",
         "libnosprotos",
         "libnos_transport",
-        "libqti_vndfwk_detect.vendor",
         "libsensorndkbridge",
         "libstagefright_bufferpool@2.0.1.vendor",
         "libtextclassifier_hash.vendor",
@@ -152,14 +155,7 @@
         "nos_app_avb",
         "nos_app_keymaster",
         "nos_app_weaver",
-        "sound_trigger.primary.msmnile",
-        "vendor.display.config@1.0.vendor",
-        "vendor.display.config@1.1.vendor",
-        "vendor.display.config@1.2.vendor",
-        "vendor.display.config@1.3.vendor",
-        "vendor.qti.hardware.display.allocator@3.0.vendor",
-        "vendor.qti.hardware.display.mapper@3.0.vendor",
-        "vendor.qti.hardware.display.mapperextensions@1.0.vendor"
+        "sound_trigger.primary.msmnile"
       ],
       "new-modules": [],
       "vendor-skip-files": [
@@ -299,7 +295,6 @@
         "lib64/libperfmgr.so",
         "lib64/libpixelhealth.so",
         "lib64/libpixelstats.so",
-        "lib64/libqti_vndfwk_detect.so",
         "lib64/libreference-ril.so",
         "lib64/libril.so",
         "lib64/librilutils.so",
@@ -331,13 +326,6 @@
         "lib64/soundfx/libqcomvoiceprocessingdescriptors.so",
         "lib64/soundfx/libreverbwrapper.so",
         "lib64/soundfx/libvisualizer.so",
-        "lib64/vendor.display.config@1.0.so",
-        "lib64/vendor.display.config@1.1.so",
-        "lib64/vendor.display.config@1.2.so",
-        "lib64/vendor.display.config@1.3.so",
-        "lib64/vendor.qti.hardware.display.allocator@3.0.so",
-        "lib64/vendor.qti.hardware.display.mapper@3.0.so",
-        "lib64/vendor.qti.hardware.display.mapperextensions@1.0.so",
         "lib/android.hardware.audio.common@5.0-util.so",
         "lib/android.hardware.audio.common-util.so",
         "lib/ese_spi_st.so",
@@ -380,7 +368,6 @@
         "lib/libnbaio_mono.so",
         "lib/libodsp.so",
         "lib/libopus.so",
-        "lib/libqti_vndfwk_detect.so",
         "lib/libreference-ril.so",
         "lib/libril.so",
         "lib/librilutils.so",
@@ -433,12 +420,6 @@
         "lib/soundfx/libqcomvoiceprocessingdescriptors.so",
         "lib/soundfx/libreverbwrapper.so",
         "lib/soundfx/libvisualizer.so",
-        "lib/vendor.display.config@1.0.so",
-        "lib/vendor.display.config@1.1.so",
-        "lib/vendor.display.config@1.2.so",
-        "lib/vendor.display.config@1.3.so",
-        "lib/vendor.qti.hardware.display.mapper@3.0.so",
-        "lib/vendor.qti.hardware.display.mapperextensions@1.0.so",
         "odm/etc/build.prop"
       ]
     }
