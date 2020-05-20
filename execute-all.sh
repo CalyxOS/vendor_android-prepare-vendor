@@ -247,7 +247,7 @@ update_java_path() {
     __javahome="$__javapath"
     JAVA_FOUND=true
   else
-    readonly __JAVALINK=$(which java)
+    readonly __JAVALINK=$(command -v java)
     if [[ "$__JAVALINK" == "" ]]; then
       echo "[!] Java not found in system"
     else
