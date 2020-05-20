@@ -11,7 +11,7 @@ readonly SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 readonly CONSTS_SCRIPT="$SCRIPTS_DIR/constants.sh"
 readonly COMMON_SCRIPT="$SCRIPTS_DIR/common.sh"
 readonly TMP_WORK_DIR=$(mktemp -d "${TMPDIR:-/tmp}"/android_img_download.XXXXXX) || exit 1
-declare -a SYS_TOOLS=("curl" "wget")
+declare -a SYS_TOOLS=("curl")
 
 abort() {
   exit "$1"
@@ -170,6 +170,6 @@ fi
 
 echo "[*] Downloading image from '$url'"
 outFile=$OUTPUT_DIR/$(basename "$url")
-wget --continue -O "$outFile" "$url"
+curl -L -C - -o "$outFile" "$url"
 
 abort 0

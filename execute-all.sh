@@ -9,7 +9,7 @@ set -u # fail on undefined variable
 
 readonly SCRIPTS_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 readonly TMP_WORK_DIR=$(mktemp -d "${TMPDIR:-/tmp}"/android_prepare_vendor.XXXXXX) || exit 1
-declare -a SYS_TOOLS=("mkdir" "dirname" "date" "touch" "wget" "mount" "shasum" "unzip")
+declare -a SYS_TOOLS=("mkdir" "curl" "dirname" "date" "touch" "mount" "shasum" "unzip")
 readonly HOST_OS="$(uname -s)"
 
 # Realpath implementation in bash (required for macOS support)
@@ -144,7 +144,7 @@ oatdump_deps_download() {
     download_url="L_OATDUMP_URL_API$api_level"
   fi
 
-  wget -O "$out_file" "${!download_url}" || {
+  curl -L -o "$out_file" "${!download_url}" || {
     echo "[-] oatdump dependencies download failed"
     abort 1
   }
