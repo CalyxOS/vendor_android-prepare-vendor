@@ -658,6 +658,7 @@
           "libsensorndkbridge",
           "android.hardware.drm@1.2-service.clearkey"
         ],
+        "product-bytecode": [],
         "new-modules": [],
         "dep-dso": [],
         "BoardConfigVendor": [],
