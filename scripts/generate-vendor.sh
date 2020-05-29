@@ -735,7 +735,7 @@ gen_mk_for_bytecode() {
       while read -r lib
       do
         echo "$lib" | sed "s#$inDir/##" >> "$RUNTIME_EXTRA_BLOBS_LIST"
-      done < <(find "$appDir/lib" -type f -iname '*.so')
+      done < <(find "$appDir/lib" -type f -iname '*.so' | sort)
 
       # Some prebuilt APKs have also prebuilt JNI libs that are stored under
       # system-wide lib directories, with app directory containing a symlink to.
@@ -759,7 +759,7 @@ gen_mk_for_bytecode() {
         apk_lib_slinks+="$(gen_apk_dso_symlink "$dsoName" "$dsoMName" "$dsoRoot" \
                            "$lcMPath/$pkgName" "$arch")"
         echo "${dsoRoot:1}/$dsoName" >> "$APK_SYSTEM_LIB_BLOBS_LIST"
-      done < <(find -L "$appDir/lib" -type l -iname '*.so')
+      done < <(find -L "$appDir/lib" -type l -iname '*.so' | sort)
     fi
 
     {
