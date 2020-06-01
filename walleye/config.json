@@ -470,13 +470,11 @@
     "naked": {
       "overlays-dir": "",
       "system-bytecode": [
-        "system/app/embms/embms.apk",
         "system/app/ims/ims.apk",
         "system/app/uceShimService/uceShimService.apk",
         "system/framework/cneapiclient.jar",
         "system/framework/com.quicinc.cne.api-V1.0-java.jar",
         "system/framework/com.quicinc.cne.jar",
-        "system/framework/embmslibrary.jar",
         "system/product/framework/libhwinfo.jar",
         "system/framework/qcrilhook.jar",
         "system/framework/rcsimssettings.jar",
