@@ -60,7 +60,7 @@ readonly L_OATDUMP_API29_SIG='394a47491de4def3b825b22713f5ecfd8f16e00497f35213ff
 readonly D_OATDUMP_API29_SIG='95ce6c296c5115861db3c876eb5bfd11cdc34deebace18462275368492c6ea87'
 
 # sub-directories that contain bytecode archives
-declare -ra SUBDIRS_WITH_BC=("app" "framework" "priv-app" "overlay" "product")
+declare -ra SUBDIRS_WITH_BC=("app" "framework" "priv-app" "overlay" "product/app" "product/framework" "product/priv-app")
 
 # ART runtime files
 declare -ra ART_FILE_EXTS=("odex" "oat" "art" "vdex")
