@@ -474,6 +474,8 @@
         "system/framework/rcsimssettings.jar",
         "system/framework/vendor.qti.qcril.am-V1.0-java.jar",
         "system/priv-app/CNEService/CNEService.apk",
+        "system/product/priv-app/EuiccGoogle/EuiccGoogle.apk::PRESIGNED",
+        "system/product/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED",
         "system/priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk"
       ],
       "system-other": [
@@ -520,7 +522,8 @@
         "system/lib64/lib-imsvt.so",
         "system/lib64/lib-imsvtutils.so",
         "system/lib64/librcc.so",
-        "system/lib64/vendor.qti.qcril.am@1.0.so"
+        "system/lib64/vendor.qti.qcril.am@1.0.so",
+        "system/product/priv-app/EuiccSupportPixel/esim0.img"
       ],
       "product-bytecode": [],
       "forced-modules": [
