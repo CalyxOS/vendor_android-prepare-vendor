@@ -474,6 +474,10 @@ gen_board_family_cfg_mk() {
     familyBoardCfgVendorMk="$OUTPUT_DIR/vendor/$VENDOR_DIR/$DEVICE_FAMILY/proprietary/BoardConfigVendor.mk"
     majorTarget="bonito"
     minorTarget="sargo"
+  elif [[ "$DEVICE_FAMILY" == "sunfish" ]]; then
+    familyBoardCfgVendorMk="$OUTPUT_DIR/vendor/$VENDOR_DIR/$DEVICE_FAMILY/proprietary/BoardConfigVendor.mk"
+    majorTarget="sunfish"
+    minorTarget="sunfish"
   else
     return 0
   fi
