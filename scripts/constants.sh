@@ -42,6 +42,8 @@ readonly L_OATDUMP_URL_API28='https://onedrive.live.com/download?cid=D1FAC8CC6BE
 readonly D_OATDUMP_URL_API28='https://onedrive.live.com/download?cid=D1FAC8CC6BE2C2B0&resid=D1FAC8CC6BE2C2B0%21582&authkey=ABMMORAJ-GGjs2k'
 readonly L_OATDUMP_URL_API29='https://onedrive.live.com/download?cid=D1FAC8CC6BE2C2B0&resid=D1FAC8CC6BE2C2B0%21574&authkey=ADSQA_DtfAmmk2c'
 readonly D_OATDUMP_URL_API29='https://onedrive.live.com/download?cid=D1FAC8CC6BE2C2B0&resid=D1FAC8CC6BE2C2B0%21582&authkey=ABMMORAJ-GGjs2k'
+readonly L_OATDUMP_URL_API30='https://onedrive.live.com/download?cid=D1FAC8CC6BE2C2B0&resid=D1FAC8CC6BE2C2B0%21574&authkey=ADSQA_DtfAmmk2c'
+readonly D_OATDUMP_URL_API30='https://onedrive.live.com/download?cid=D1FAC8CC6BE2C2B0&resid=D1FAC8CC6BE2C2B0%21582&authkey=ABMMORAJ-GGjs2k'
 
 readonly L_OATDUMP_API23_SIG='688f1c1f97e3b9eb32702c60ca05abbf313bc98a25334aa3ed4a108095162244'
 readonly D_OATDUMP_API23_SIG='688f1c1f97e3b9eb32702c60ca05abbf313bc98a25334aa3ed4a108095162244'
@@ -59,6 +61,8 @@ readonly L_OATDUMP_API28_SIG='394a47491de4def3b825b22713f5ecfd8f16e00497f35213ff
 readonly D_OATDUMP_API28_SIG='95ce6c296c5115861db3c876eb5bfd11cdc34deebace18462275368492c6ea87'
 readonly L_OATDUMP_API29_SIG='394a47491de4def3b825b22713f5ecfd8f16e00497f35213ffd83c2cc709384e'
 readonly D_OATDUMP_API29_SIG='95ce6c296c5115861db3c876eb5bfd11cdc34deebace18462275368492c6ea87'
+readonly L_OATDUMP_API30_SIG='394a47491de4def3b825b22713f5ecfd8f16e00497f35213ffd83c2cc709384e'
+readonly D_OATDUMP_API30_SIG='95ce6c296c5115861db3c876eb5bfd11cdc34deebace18462275368492c6ea87'
 
 # sub-directories that contain bytecode archives
 declare -ra SUBDIRS_WITH_BC=("app" "framework" "priv-app" "overlay" "product/app" "product/framework" "product/priv-app")
