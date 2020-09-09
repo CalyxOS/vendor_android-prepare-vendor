@@ -5,7 +5,7 @@
   "vendor": "google",
   "aosp-vendor-dir": "google_devices",
   "device-family": "bonito",
-  "supported-apis": ["api-29"],
+  "supported-apis": ["api-30"],
   "extra-partitions": [],
   "ota-partitions": [
     "abl",
@@ -24,7 +24,7 @@
   "AndroidMk": "bonito/Android.mk",
   "BoardConfigVendorMk": "bonito/BoardConfigVendorPartial.mk",
   "DeviceVendorMk": "bonito/proprietary/device-vendor.mk",
-  "api-29": {
+  "api-30": {
     "naked": {
       "overlays-dir": "",
       "system-bytecode": [

@@ -5,7 +5,7 @@
   "vendor": "google",
   "aosp-vendor-dir": "google_devices",
   "device-family": "muskie",
-  "supported-apis": ["api-29"],
+  "supported-apis": ["api-30"],
   "extra-partitions": [],
   "ota-partitions": [
     "abl",
@@ -25,7 +25,7 @@
   "AndroidMk": "walleye/Android.mk",
   "BoardConfigVendorMk": "muskie/proprietary/BoardConfigVendor.mk",
   "DeviceVendorMk": "muskie/proprietary/device-vendor-walleye.mk",
-  "api-29": {
+  "api-30": {
     "naked": {
       "overlays-dir": "",
       "system-bytecode": [

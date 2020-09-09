@@ -5,7 +5,7 @@
   "vendor": "google",
   "aosp-vendor-dir": "google_devices",
   "device-family": "coral",
-  "supported-apis": ["api-29"],
+  "supported-apis": ["api-30"],
   "extra-partitions": [],
   "ota-partitions": [
     "abl",
@@ -23,7 +23,7 @@
   "AndroidMk": "coral/Android.mk",
   "BoardConfigVendorMk": "coral/BoardConfigVendorPartial.mk",
   "DeviceVendorMk": "coral/proprietary/device-vendor.mk",
-  "api-29": {
+  "api-30": {
     "naked": {
       "overlays-dir": "",
       "product-bytecode": [

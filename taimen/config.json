@@ -5,7 +5,7 @@
   "vendor": "google",
   "aosp-vendor-dir": "google_devices",
   "device-family": "taimen",
-  "supported-apis": ["api-29"],
+  "supported-apis": ["api-30"],
   "extra-partitions": [],
   "ota-partitions": [
     "abl",
@@ -25,7 +25,7 @@
   "AndroidMk": "taimen/Android.mk",
   "BoardConfigVendorMk": "taimen/proprietary/BoardConfigVendor.mk",
   "DeviceVendorMk": "taimen/proprietary/device-vendor.mk",
-  "api-29": {
+  "api-30": {
     "naked": {
       "overlays-dir": "",
       "system-bytecode": [
