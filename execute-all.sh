@@ -494,11 +494,6 @@ echo "[*] Setting output base to '$OUT_BASE'"
 factoryImgArchive=""
 if [[ "$INPUT_IMG" == "" ]]; then
 
-  # Factory image alias for devices with naming incompatibilities with AOSP
-  if [[ "$DEVICE" == "flounder" && "$DEV_ALIAS" == "" ]]; then
-    echo "[-] Building for flounder requires setting the device alias option - 'volantis' or 'volantisg'"
-    abort 1
-  fi
   if [[ "$DEV_ALIAS" == "" ]]; then
     DEV_ALIAS="$DEVICE"
   fi
@@ -528,11 +523,6 @@ if [ "$OTA" = true ]; then
 OtaArchive=""
 if [[ "$INPUT_OTA" == "" ]]; then
 
-  # Factory image alias for devices with naming incompatibilities with AOSP
-  if [[ "$DEVICE" == "flounder" && "$DEV_ALIAS" == "" ]]; then
-    echo "[-] Building for flounder requires setting the device alias option - 'volantis' or 'volantisg'"
-    abort 1
-  fi
   if [[ "$DEV_ALIAS" == "" ]]; then
     DEV_ALIAS="$DEVICE"
   fi

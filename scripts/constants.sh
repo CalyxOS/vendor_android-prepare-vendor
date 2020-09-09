@@ -4,11 +4,6 @@
 
 # List of supported devices
 declare -ra SUPPORTED_DEVICES=(
-  "bullhead"      # Nexus 5x
-  "flounder"      # Nexus 9
-  "angler"        # Nexus 6p
-  "sailfish"      # Pixel
-  "marlin"        # Pixel XL
   "walleye"       # Pixel 2
   "taimen"        # Pixel 2 XL
   "blueline"      # Pixel 3

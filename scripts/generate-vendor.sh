@@ -457,12 +457,7 @@ gen_board_cfg_mk() {
 gen_board_family_cfg_mk() {
   local familyBoardCfgVendorMk="" majorTarget="" minorTarget=""
 
-  # So far required for Pixel 1st & 3rd generation
-  if [[ "$DEVICE_FAMILY" == "marlin" ]]; then
-    familyBoardCfgVendorMk="$OUTPUT_DIR/vendor/$VENDOR_DIR/$DEVICE_FAMILY/BoardConfigVendor.mk"
-    majorTarget="marlin"
-    minorTarget="sailfish"
-  elif [[ "$DEVICE_FAMILY" == "crosshatch" ]]; then
+  if [[ "$DEVICE_FAMILY" == "crosshatch" ]]; then
     familyBoardCfgVendorMk="$OUTPUT_DIR/vendor/$VENDOR_DIR/$DEVICE_FAMILY/proprietary/BoardConfigVendor.mk"
     majorTarget="crosshatch"
     minorTarget="blueline"
@@ -1030,14 +1025,6 @@ gen_android_mk() {
   targetProductDevice="$DEVICE"
   {
     echo 'LOCAL_PATH := $(call my-dir)'
-
-    # Special handling for flounder dual target boards
-    if [[ "$DEVICE" == "flounder_lte" ]]; then
-      echo 'ifneq ("$(wildcard vendor/htc/flounder/Android.mk)","")'
-      echo '  $(error "volantis & volantisg vendor blobs cannot co-exist under AOSP root since definitions conflict")'
-      echo 'endif'
-      targetProductDevice="flounder"
-    fi
 
     echo "ifeq (\$(TARGET_DEVICE),$targetProductDevice)"
     echo ""
