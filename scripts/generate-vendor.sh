@@ -912,6 +912,7 @@ gen_mk_for_shared_libs() {
       echo "LOCAL_SRC_FILES := $dsoSrc"
       echo "LOCAL_MODULE_CLASS := SHARED_LIBRARIES"
       echo "LOCAL_MODULE_SUFFIX := .so"
+      echo "LOCAL_CHECK_ELF_FILES := false"
 
       if echo "$dsoModule" | grep -q "^vendor/"; then
         echo "LOCAL_PROPRIETARY_MODULE := true"
@@ -974,6 +975,7 @@ gen_mk_for_shared_libs() {
       echo "LOCAL_SRC_FILES := $dsoSrc"
       echo "LOCAL_MODULE_CLASS := SHARED_LIBRARIES"
       echo "LOCAL_MODULE_SUFFIX := .so"
+      echo "LOCAL_CHECK_ELF_FILES := false"
 
       if echo "$dsoModule" | grep -q "^vendor/"; then
         echo "LOCAL_PROPRIETARY_MODULE := true"
