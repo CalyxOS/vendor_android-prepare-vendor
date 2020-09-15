@@ -468,6 +468,7 @@
         "lib/soundfx/libvolumelistener.so",
         "odm/etc/build.prop",
         "odm/etc/group",
+        "odm/etc/NOTICE.xml.gz",
         "odm/etc/passwd"
       ]
     }
