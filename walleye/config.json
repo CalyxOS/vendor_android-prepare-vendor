@@ -383,7 +383,6 @@
         "lib/libgnss.so",
         "lib/libgps.utils.so",
         "lib/libgpu_tonemapper.so",
-        "lib/libhdrplusclient.so",
         "lib/libhidltransport.so",
         "lib/libhwbinder.so",
         "lib/libjson.so",
