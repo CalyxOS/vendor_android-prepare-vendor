@@ -480,6 +480,9 @@ gen_board_cfg_mk() {
       echo 'BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4'
     fi
 
+    # Android 11 workaround for including .vintf files in PRODUCT_COPY_FILES
+    echo 'BUILD_BROKEN_VINTF_PRODUCT_COPY_FILES := true'
+
     # Update with user selected extra flags
     echo "$MK_FLAGS_LIST"
   } >> "$BOARD_CONFIG_VENDOR_MK"
