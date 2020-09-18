@@ -16,6 +16,7 @@ assignees: ''
 - [ ] Flashlight / torch
 - [ ] GPS
 - [ ] Hotspot
+- [ ] NFC
 - [ ] Calls
 - [ ] Text Messages / SMS
 - [ ] Mobile data
