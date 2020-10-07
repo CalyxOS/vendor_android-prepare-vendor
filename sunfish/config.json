@@ -25,7 +25,9 @@
     "naked": {
       "overlays-dir": "",
       "rro-overlays": ["CarrierConfigOverlay"],
-      "product-bytecode": [],
+      "product-bytecode": [
+        "product/priv-app/EuiccGoogle/EuiccGoogle.apk::PRESIGNED"
+      ],
       "product-other": [
         "product/etc/apns-conf.xml",
         "product/lib/libdmengine.so",
@@ -46,6 +48,8 @@
         "system_ext/framework/vendor.qti.hardware.data.latency-V1.0-java.jar",
         "system_ext/framework/vendor.qti.ims.callinfo-V1.0-java.jar",
         "system_ext/framework/vendor.qti.voiceprint-V1.0-java.jar",
+        "system_ext/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED",
+        "system_ext/priv-app/EuiccSupportPixelPermissions/EuiccSupportPixelPermissions.apk::PRESIGNED",
         "system_ext/priv-app/ims/ims.apk",
         "system_ext/priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk"
       ],
