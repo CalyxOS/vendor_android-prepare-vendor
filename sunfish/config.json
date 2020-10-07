@@ -34,7 +34,9 @@
         "product/priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk",
         "product/framework/QtiTelephonyServicelibrary.jar",
         "product/framework/com.qualcomm.qti.uceservice-V2.1-java.jar",
-        "product/framework/qcrilhook.jar"
+        "product/framework/qcrilhook.jar",
+        "product/priv-app/EuiccGoogle/EuiccGoogle.apk::PRESIGNED",
+        "product/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED"
       ],
       "product-other": [
         "product/etc/permissions/com.qualcomm.qcrilmsgtunnel.xml",
