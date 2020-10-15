@@ -61,7 +61,7 @@ _EOF
 }
 
 verify_input() {
-  # Not checking for product here yet since it may not be present on all devices
+  # Not checking for product or system_ext here yet since it may not be present on all devices
   if [[ ! -d "$1/vendor" || ! -d "$1/system" || ! -d "$1/radio" || \
         ! -f "$1/system/build.prop" ]]; then
     echo "[-] Invalid input directory structure"
@@ -137,6 +137,10 @@ has_product_size() {
   has_partition_size product "$1"
 }
 
+has_system_ext_size() {
+  has_partition_size system_ext "$1"
+}
+
 read_invalid_symlink() {
   local inBase="$1"
   local relTarget="$2"
@@ -182,6 +186,7 @@ extract_blobs() {
   local outDir_prop="$3/proprietary"
   local outDir_vendor="$3/vendor"
   local outDir_product="$3/product"
+  local outDir_system_ext="$3/system_ext"
 
   local src="" dst="" dstDir="" outBase="" outPath="" openTag=""
 
@@ -212,7 +217,8 @@ extract_blobs() {
     fi
 
     # Files under /system go to $outDir_prop, while files from /vendor
-    # to $outDir_vendor, and files from /product to $outDir_product
+    # to $outDir_vendor, files from /product to $outDir_product,
+    # and files from /system_ext to $outDir_system-ext
     if [[ $src == system/* ]]; then
       outBase=$outDir_prop
       dst=$(echo "$dst" | sed 's#^system/##')
@@ -222,6 +228,9 @@ extract_blobs() {
     elif [[ $src == product/* ]]; then
       outBase=$outDir_product
       dst=$(echo "$dst" | sed 's#^product/##')
+    elif [[ $src == system_ext/* ]]; then
+      outBase=$outDir_system_ext
+      dst=$(echo "$dst" | sed 's#^system_ext/##')
     else
       echo "[-] Invalid path detected at '$blobsList' ($src)"
       abort 1
@@ -262,6 +271,7 @@ update_vendor_blobs_mk() {
   local relDir_prop="vendor/$VENDOR_DIR/$DEVICE/proprietary"
   local relDir_vendor="vendor/$VENDOR_DIR/$DEVICE/vendor"
   local relDir_product="vendor/$VENDOR_DIR/$DEVICE/product"
+  local relDir_system_ext="vendor/$VENDOR_DIR/$DEVICE/system_ext"
 
   local src="" srcRelDir="" dst="" dstRelDir="" fileExt="" dstMk=""
 
@@ -311,6 +321,9 @@ update_vendor_blobs_mk() {
     elif [[ $src == product/* ]]; then
       srcRelDir=$relDir_product
       src=$(echo "$src" | sed 's#^product/##')
+    elif [[ $src == system_ext/* ]]; then
+      srcRelDir=$relDir_system_ext
+      src=$(echo "$src" | sed 's#^system_ext/##')
     else
       echo "[-] Invalid src path detected at '$blobsList'"
       abort 1
@@ -326,6 +339,10 @@ update_vendor_blobs_mk() {
     elif [[ $dst == product/* ]]; then
       dstRelDir='$(TARGET_COPY_OUT_PRODUCT)'
       dst=$(echo "$dst" | sed 's#^product/##')
+      dstMk="$BOARD_CONFIG_VENDOR_MK"
+    elif [[ $dst == system_ext/* ]]; then
+      dstRelDir='$(TARGET_COPY_OUT_SYSTEM_EXT)'
+      dst=$(echo "$dst" | sed 's#^system_ext/##')
       dstMk="$BOARD_CONFIG_VENDOR_MK"
     else
       echo "[-] Invalid dst path detected at '$blobsList'"
@@ -418,6 +435,7 @@ gen_board_cfg_mk() {
   local inDir="$1"
   local v_img_sz
   local p_img_sz
+  local sysExt_img_sz
 
   # First lets check if vendor partition size has been extracted from
   # previous data extraction script
@@ -434,6 +452,13 @@ gen_board_cfg_mk() {
     echo "[!] Unknown product image size for '$DEVICE' device"
   fi
 
+  # Then lets check if system_ext partition size has been extracted from
+  # previous data extraction script
+  sysExt_img_sz="$(has_system_ext_size "$inDir")"
+  if [[ "$sysExt_img_sz" == "" ]]; then
+    echo "[!] Unknown system_ext image size for '$DEVICE' device"
+  fi
+
   {
     echo "TARGET_BOARD_INFO_FILE := vendor/$VENDOR_DIR/$DEVICE/vendor-board-info.txt"
     echo 'BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4'
@@ -448,6 +473,15 @@ gen_board_cfg_mk() {
       echo '  BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4'
       echo 'endif'
     fi
+    if [[ "$sysExt_img_sz" != "" ]]; then
+      echo 'ifneq ($(PRODUCT_USE_DYNAMIC_PARTITIONS), true)'
+      echo "  BOARD_SYSTEM_EXTIMAGE_PARTITION_SIZE := $sysExt_img_sz"
+      echo 'endif'
+      echo 'BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4'
+    fi
+
+    # Android 11 workaround for including .vintf files in PRODUCT_COPY_FILES
+    echo 'BUILD_BROKEN_VINTF_PRODUCT_COPY_FILES := true'
 
     # Update with user selected extra flags
     echo "$MK_FLAGS_LIST"
@@ -457,12 +491,7 @@ gen_board_cfg_mk() {
 gen_board_family_cfg_mk() {
   local familyBoardCfgVendorMk="" majorTarget="" minorTarget=""
 
-  # So far required for Pixel 1st & 3rd generation
-  if [[ "$DEVICE_FAMILY" == "marlin" ]]; then
-    familyBoardCfgVendorMk="$OUTPUT_DIR/vendor/$VENDOR_DIR/$DEVICE_FAMILY/BoardConfigVendor.mk"
-    majorTarget="marlin"
-    minorTarget="sailfish"
-  elif [[ "$DEVICE_FAMILY" == "crosshatch" ]]; then
+  if [[ "$DEVICE_FAMILY" == "crosshatch" ]]; then
     familyBoardCfgVendorMk="$OUTPUT_DIR/vendor/$VENDOR_DIR/$DEVICE_FAMILY/proprietary/BoardConfigVendor.mk"
     majorTarget="crosshatch"
     minorTarget="blueline"
@@ -672,6 +701,10 @@ gen_mk_for_bytecode() {
     origin="$inDir/product/$relSubRoot"
     lcMPath="\$(PRODUCT_OUT)/\$(TARGET_COPY_OUT_PRODUCT)/$relSubRoot"
     dsoRootBase="/product"
+  elif [[ "$relRoot" == "system_ext" ]]; then
+    origin="$inDir/system_ext/$relSubRoot"
+    lcMPath="\$(PRODUCT_OUT)/\$(TARGET_COPY_OUT_SYSTEM_EXT)/$relSubRoot"
+    dsoRootBase="/system_ext"
   else
     echo "[-] Invalid '$relRoot' relative directory"
     abort 1
@@ -917,6 +950,7 @@ gen_mk_for_shared_libs() {
       echo "LOCAL_SRC_FILES := $dsoSrc"
       echo "LOCAL_MODULE_CLASS := SHARED_LIBRARIES"
       echo "LOCAL_MODULE_SUFFIX := .so"
+      echo "LOCAL_CHECK_ELF_FILES := false"
 
       if echo "$dsoModule" | grep -q "^vendor/"; then
         echo "LOCAL_PROPRIETARY_MODULE := true"
@@ -979,6 +1013,7 @@ gen_mk_for_shared_libs() {
       echo "LOCAL_SRC_FILES := $dsoSrc"
       echo "LOCAL_MODULE_CLASS := SHARED_LIBRARIES"
       echo "LOCAL_MODULE_SUFFIX := .so"
+      echo "LOCAL_CHECK_ELF_FILES := false"
 
       if echo "$dsoModule" | grep -q "^vendor/"; then
         echo "LOCAL_PROPRIETARY_MODULE := true"
@@ -1031,14 +1066,6 @@ gen_android_mk() {
   {
     echo 'LOCAL_PATH := $(call my-dir)'
 
-    # Special handling for flounder dual target boards
-    if [[ "$DEVICE" == "flounder_lte" ]]; then
-      echo 'ifneq ("$(wildcard vendor/htc/flounder/Android.mk)","")'
-      echo '  $(error "volantis & volantisg vendor blobs cannot co-exist under AOSP root since definitions conflict")'
-      echo 'endif'
-      targetProductDevice="flounder"
-    fi
-
     echo "ifeq (\$(TARGET_DEVICE),$targetProductDevice)"
     echo ""
     echo "expected_build_id := \$(shell cat vendor/$VENDOR_DIR/$DEVICE/build_id.txt)"
@@ -1049,7 +1076,7 @@ gen_android_mk() {
     echo "include vendor/$VENDOR_DIR/$DEVICE/AndroidBoardVendor.mk"
   } >> "$ANDROID_MK"
 
-  for root in "vendor" "proprietary" "product"
+  for root in "vendor" "proprietary" "product" "system_ext"
   do
     for path in "${SUBDIRS_WITH_BC[@]}"
     do

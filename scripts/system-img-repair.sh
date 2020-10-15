@@ -109,7 +109,7 @@ oat2dex_repair() {
   # Identify supported ABI(s) - extra work for 64bit ABIs
   for type in "arm" "arm64" "x86" "x86_64"
   do
-    if [ -f "$INPUT_DIR/framework/$type/boot.art" ]; then
+    if [ -d "$INPUT_DIR/framework/$type" ]; then
       abis+=("$type")
     fi
   done
@@ -292,7 +292,7 @@ oatdump_repair() {
   # Identify supported ABI(s) - extra work for 64bit ABIs
   for cpu in "arm" "arm64" "x86" "x86_64"
   do
-    if [ -f "$INPUT_DIR/framework/$cpu/boot.art" ]; then
+    if [ -d "$INPUT_DIR/framework/$cpu" ]; then
       abis+=("$cpu")
     fi
   done
@@ -474,7 +474,7 @@ smali_repair() {
   # Identify supported ABI(s) - extra work for 64bit ABIs
   for type in "arm" "arm64" "x86" "x86_64"
   do
-    if [ -f "$INPUT_DIR/framework/$type/boot.art" ]; then
+    if [ -d "$INPUT_DIR/framework/$type" ]; then
       abis+=("$type")
     fi
   done
