@@ -46,6 +46,7 @@ abort() {
     unmount_raw_image "$FACTORY_IMGS_DATA/system"
     unmount_raw_image "$FACTORY_IMGS_DATA/vendor"
     unmount_raw_image "$FACTORY_IMGS_DATA/product"
+    unmount_raw_image "$FACTORY_IMGS_DATA/system_ext"
   fi
   rm -rf "$TMP_WORK_DIR"
   exit "$1"
@@ -494,11 +495,6 @@ echo "[*] Setting output base to '$OUT_BASE'"
 factoryImgArchive=""
 if [[ "$INPUT_IMG" == "" ]]; then
 
-  # Factory image alias for devices with naming incompatibilities with AOSP
-  if [[ "$DEVICE" == "flounder" && "$DEV_ALIAS" == "" ]]; then
-    echo "[-] Building for flounder requires setting the device alias option - 'volantis' or 'volantisg'"
-    abort 1
-  fi
   if [[ "$DEV_ALIAS" == "" ]]; then
     DEV_ALIAS="$DEVICE"
   fi
@@ -528,11 +524,6 @@ if [ "$OTA" = true ]; then
 OtaArchive=""
 if [[ "$INPUT_OTA" == "" ]]; then
 
-  # Factory image alias for devices with naming incompatibilities with AOSP
-  if [[ "$DEVICE" == "flounder" && "$DEV_ALIAS" == "" ]]; then
-    echo "[-] Building for flounder requires setting the device alias option - 'volantis' or 'volantisg'"
-    abort 1
-  fi
   if [[ "$DEV_ALIAS" == "" ]]; then
     DEV_ALIAS="$DEVICE"
   fi
@@ -578,6 +569,9 @@ if [ -d "$FACTORY_IMGS_DATA" ]; then
   fi
   if mount | grep -q "$FACTORY_IMGS_DATA/product"; then
     unmount_raw_image "$FACTORY_IMGS_DATA/product"
+  fi
+  if mount | grep -q "$FACTORY_IMGS_DATA/system_ext"; then
+    unmount_raw_image "$FACTORY_IMGS_DATA/system_ext"
   fi
   rm -rf "${FACTORY_IMGS_DATA:?}"/*
 else
@@ -727,6 +721,7 @@ if [ $DEODEX_ALL = false ]; then
   BYTECODE_LIST="$TMP_WORK_DIR/bytecode_list.txt"
   jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "system-bytecode" "$CONFIG_FILE" > "$BYTECODE_LIST"
   jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "product-bytecode" "$CONFIG_FILE" >> "$BYTECODE_LIST"
+  jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "system_ext-bytecode" "$CONFIG_FILE" >> "$BYTECODE_LIST"
   REPAIR_SCRIPT_ARG+=( --bytecode-list "$BYTECODE_LIST")
 fi
 
@@ -742,20 +737,26 @@ $REPAIR_SCRIPT --method "$BYTECODE_REPAIR_METHOD" --input "$SYSTEM_ROOT" \
   abort 1
 }
 
-# Bytecode under vendor or product partition doesn't require repair (at least for now)
+# Bytecode under vendor, product or system_ext partition doesn't require repair (at least for now)
 # However, make it available to repaired data directory to have a single source
 # for next script
 ln -s "$FACTORY_IMGS_DATA/vendor" "$FACTORY_IMGS_R_DATA/vendor"
 if [[ -d "$FACTORY_IMGS_DATA/product" ]]; then
   ln -s "$FACTORY_IMGS_DATA/product" "$FACTORY_IMGS_R_DATA/product"
 fi
+if [[ -d "$FACTORY_IMGS_DATA/system_ext" ]]; then
+  ln -s "$FACTORY_IMGS_DATA/system_ext" "$FACTORY_IMGS_R_DATA/system_ext"
+fi
 
-# Copy vendor and product partition image size as saved from $EXTRACT_SCRIPT script
+# Copy vendor, product, and system_ext partition image size as saved from $EXTRACT_SCRIPT script
 # $VGEN_SCRIPT will fail over to last known working default if image size
 # file not found when parsing data
 cp "$FACTORY_IMGS_DATA/vendor_partition_size" "$FACTORY_IMGS_R_DATA"
 if [[ -f "$FACTORY_IMGS_DATA/product_partition_size" ]]; then
   cp "$FACTORY_IMGS_DATA/product_partition_size" "$FACTORY_IMGS_R_DATA"
+fi
+if [[ -f "$FACTORY_IMGS_DATA/system_ext_partition_size" ]]; then
+  cp "$FACTORY_IMGS_DATA/system_ext_partition_size" "$FACTORY_IMGS_R_DATA"
 fi
 
 # Make radio files available to vendor generate script
@@ -790,6 +791,7 @@ if [ "$KEEP_DATA" = false ]; then
     unmount_raw_image "$FACTORY_IMGS_DATA/system"
     unmount_raw_image "$FACTORY_IMGS_DATA/vendor"
     unmount_raw_image "$FACTORY_IMGS_DATA/product"
+    unmount_raw_image "$FACTORY_IMGS_DATA/system_ext"
   fi
   rm -rf "$FACTORY_IMGS_DATA"
   rm -rf "$FACTORY_IMGS_R_DATA"

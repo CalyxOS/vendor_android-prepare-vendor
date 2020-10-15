@@ -84,6 +84,10 @@ extract_product_partition_size() {
   extract_partition_size product "$1" "$2"
 }
 
+extract_system_ext_partition_size() {
+  extract_partition_size system_ext "$1" "$2"
+}
+
 mount_darwin() {
   local imgFile="$1"
   local mountPoint="$2"
@@ -301,6 +305,11 @@ if [ -d "$PRODUCT_DATA_OUT" ]; then
   rm -rf "${PRODUCT_DATA_OUT:?}"/*
 fi
 
+SYSTEM_EXT_DATA_OUT="$OUTPUT_DIR/system_ext"
+if [ -d "$SYSTEM_EXT_DATA_OUT" ]; then
+  rm -rf "${SYSTEM_EXT_DATA_OUT:?}"/*
+fi
+
 RADIO_DATA_OUT="$OUTPUT_DIR/radio"
 if [ -d "$RADIO_DATA_OUT" ]; then
   rm -rf "${RADIO_DATA_OUT:?}"/*
@@ -317,12 +326,17 @@ mkdir -p "$extractDir"
 extract_archive "$INPUT_ARCHIVE" "$extractDir"
 
 hasProductImg=false
+hasSystemExtImg=false
 if [[ -f "$extractDir/system.img" && -f "$extractDir/vendor.img" ]]; then
   sysImg="$extractDir/system.img"
   vImg="$extractDir/vendor.img"
   if [[ -f "$extractDir/product.img" ]]; then
     pImg="$extractDir/product.img"
     hasProductImg=true
+  fi
+  if [[ -f "$extractDir/system_ext.img" ]]; then
+    sysExtImg="$extractDir/system_ext.img"
+    hasSystemExtImg=true
   fi
 else
   updateArch=$(find "$extractDir" -iname "image-*.zip" | head -n 1)
@@ -336,6 +350,10 @@ else
   if [[ -f "$extractDir/images/product.img" ]]; then
     pImg="$extractDir/images/product.img"
     hasProductImg=true
+  fi
+  if [[ -f "$extractDir/images/system_ext.img" ]]; then
+    sysExtImg="$extractDir/images/system_ext.img"
+    hasSystemExtImg=true
   fi
 fi
 
@@ -358,6 +376,7 @@ fi
 rawSysImg="$extractDir/images/system.img.raw"
 rawVImg="$extractDir/images/vendor.img.raw"
 rawPImg="$extractDir/images/product.img.raw"
+rawSysExtImg="$extractDir/images/system_ext.img.raw"
 
 simg2img "$sysImg" "$rawSysImg" || {
   echo "[-] simg2img failed to convert system.img from sparse"
@@ -373,26 +392,41 @@ if [ $hasProductImg = true ]; then
     abort 1
   }
 fi
+if [ $hasSystemExtImg = true ]; then
+  simg2img "$sysExtImg" "$rawSysExtImg" || {
+    echo "[-] simg2img failed to convert system_ext.img from sparse"
+    abort 1
+  }
+fi
 
 # Save raw vendor img partition size
 extract_vendor_partition_size "$rawVImg" "$OUTPUT_DIR"
 if [ $hasProductImg = true ]; then
   extract_product_partition_size "$rawPImg" "$OUTPUT_DIR"
 fi
+if [ $hasSystemExtImg = true ]; then
+  extract_system_ext_partition_size "$rawSysExtImg" "$OUTPUT_DIR"
+fi
 
 if [ "$USE_DEBUGFS" = true ]; then
-  # Extract raw system, vendor and product images. Data will be processed later
+  # Extract raw system, vendor, product, and system_ext images. Data will be processed later
   extract_img_data "$rawSysImg" "$SYSTEM_DATA_OUT"
   extract_img_data "$rawVImg" "$VENDOR_DATA_OUT"
   if [ $hasProductImg = true ]; then
     extract_img_data "$rawPImg" "$PRODUCT_DATA_OUT"
   fi
+  if [ $hasSystemExtImg = true ]; then
+    extract_img_data "$rawSysExtImg" "$SYSTEM_EXT_DATA_OUT"
+  fi
 else
-  # Mount raw system, vendor and product images. Data will be processed later
+  # Mount raw system, vendor, product and system_ext images. Data will be processed later
   mount_img "$rawSysImg" "$SYSTEM_DATA_OUT"
   mount_img "$rawVImg" "$VENDOR_DATA_OUT"
   if [ $hasProductImg = true ]; then
     mount_img "$rawPImg" "$PRODUCT_DATA_OUT"
+  fi
+  if [ $hasSystemExtImg = true ]; then
+    mount_img "$rawSysExtImg" "$SYSTEM_EXT_DATA_OUT"
   fi
 fi
 
