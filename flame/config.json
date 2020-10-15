@@ -26,7 +26,10 @@
   "api-30": {
     "naked": {
       "overlays-dir": "",
-      "product-bytecode": [],
+      "product-bytecode": [
+        "product/priv-app/EuiccGoogle/EuiccGoogle.apk::PRESIGNED",
+        "product/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED"
+      ],
       "product-other": [
         "product/lib/libdmengine.so",
         "product/lib/libdmjavaplugin.so",
@@ -41,7 +44,10 @@
         "product/lib64/libsdm-disp-apis.qti.so",
         "product/lib64/libsketchology_native.so",
         "product/lib64/vendor.display.color@1.0.so",
-        "product/lib64/vendor.qti.imsrtpservice@3.0.so"
+        "product/lib64/vendor.qti.imsrtpservice@3.0.so",
+        "product/priv-app/EuiccGoogle/esim-a1.img",
+        "product/priv-app/EuiccGoogle/esim-a2.img",
+        "product/priv-app/EuiccSupportPixel/esim-full-v1.img"
       ],
       "system-bytecode": [],
       "system-other": [],

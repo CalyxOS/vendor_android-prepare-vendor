@@ -26,7 +26,10 @@
   "api-30": {
     "naked": {
       "overlays-dir": "",
-      "product-bytecode": [],
+      "product-bytecode": [
+        "product/priv-app/EuiccGoogle/EuiccGoogle.apk::PRESIGNED",
+        "product/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED"
+      ],
       "product-other": [
         "product/lib/libdmengine.so",
         "product/lib/libdmjavaplugin.so",
