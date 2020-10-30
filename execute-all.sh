@@ -22,8 +22,14 @@ readonly COMMON_SCRIPT="$SCRIPTS_ROOT/scripts/common.sh"
 # Helper script to download factory images
 readonly DOWNLOAD_SCRIPT="$SCRIPTS_ROOT/scripts/download-nexus-image.sh"
 
+# Helper script to download carrier list
+readonly DOWNLOAD_CARRIER_LIST_SCRIPT="$SCRIPTS_ROOT/scripts/carriersettings-extractor/download_carrier_list.sh"
+
 # Helper script to extract system & vendor images data
 readonly EXTRACT_SCRIPT="$SCRIPTS_ROOT/scripts/extract-factory-images.sh"
+
+# Helper script to extract carrier settings
+readonly EXTRACT_CARRIER_SETTINGS_SCRIPT="$SCRIPTS_ROOT/scripts/carriersettings-extractor/carriersettings_extractor.py"
 
 # Helper script to extract ota data
 readonly OTA_SCRIPT="$SCRIPTS_ROOT/scripts/extract-ota.sh"
@@ -566,6 +572,13 @@ if [[ "$OtaArchive" == "" ]]; then
 fi
 fi
 
+# Download carrier list
+aospCarrierListFolder="$SCRIPTS_ROOT/scripts/carriersettings-extractor"
+$DOWNLOAD_CARRIER_LIST_SCRIPT --output "$aospCarrierListFolder" || {
+  echo "[-] Carrier list download failed"
+  abort 1
+}
+
 # Clear old data if present & extract data from factory images
 if [ -d "$FACTORY_IMGS_DATA" ]; then
   # Previous run might have been with --keep which keeps the mount-points. Check
@@ -763,6 +776,22 @@ if [[ -d "$OTA_DATA/radio" ]]; then
   cp -r "$OTA_DATA/radio" "$FACTORY_IMGS_DATA/"
 fi
 ln -s "$FACTORY_IMGS_DATA/radio" "$FACTORY_IMGS_R_DATA/radio"
+
+# Older devices do not have separate product partition
+PRODUCT_R_ROOT="$FACTORY_IMGS_R_DATA/system/product"
+if [ -d "$FACTORY_IMGS_DATA/product" ]; then
+  PRODUCT_R_ROOT="$FACTORY_IMGS_R_DATA/product"
+fi
+
+# Convert the CarrierSettings protobuf files to XML format compatible with AOSP
+carrierSettingsFolder="$(dirname "$(find "${OUT_BASE}" -name carrier_list.pb | head -1)")"
+echo "[*] Converting CarrierSettings APN protobuf files to XML format compatible with AOSP"
+$EXTRACT_CARRIER_SETTINGS_SCRIPT --carrierlist "$aospCarrierListFolder" \
+    --input "$carrierSettingsFolder" \
+    --output "$PRODUCT_R_ROOT/etc/" --apn || {
+  echo "[-] Carrier settings extract failed"
+  abort 1
+}
 
 VGEN_SCRIPT_EXTRA_ARGS=(--conf-type "$CONFIG_TYPE")
 if [ $FORCE_PREOPT = true ]; then
