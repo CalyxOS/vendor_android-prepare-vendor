@@ -86,6 +86,7 @@
         "system/lib64/lib-imsvtutils.so",
         "system/lib64/librcc.so",
         "system/lib64/vendor.qti.qcril.am@1.0.so",
+        "system/product/etc/apns-conf.xml",
         "system/product/priv-app/EuiccSupportPixel/esim0.img"
       ],
       "system_ext-bytecode": [],
