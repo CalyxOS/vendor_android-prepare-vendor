@@ -525,6 +525,7 @@
         "product/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED"
       ],
       "product-other": [
+        "product/etc/apns-conf.xml",
         "product/priv-app/EuiccSupportPixel/esim-full-v0.img",
         "product/priv-app/EuiccSupportPixel/esim-v1.img"
       ],
