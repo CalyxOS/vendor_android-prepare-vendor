@@ -526,6 +526,9 @@
         "system/product/priv-app/EuiccSupportPixel/esim0.img"
       ],
       "product-bytecode": [],
+      "product-other": [
+        "product/etc/apns-conf.xml",
+      ],
       "forced-modules": [
         "com.android.ims.rcsmanager",
         "RcsService",
