@@ -28,6 +28,7 @@
       "overlays-dir": "",
       "product-bytecode": [],
       "product-other": [
+        "product/etc/apns-conf.xml",
         "product/lib/libdmengine.so",
         "product/lib/libdmjavaplugin.so",
         "product/lib/libqmi_cci_system.so",

@@ -83,7 +83,8 @@
         "system/lib64/lib-imsvt.so",
         "system/lib64/lib-imsvtutils.so",
         "system/lib64/librcc.so",
-        "system/lib64/vendor.qti.qcril.am@1.0.so"
+        "system/lib64/vendor.qti.qcril.am@1.0.so",
+        "system/product/etc/apns-conf.xml"
       ],
       "system_ext-bytecode": [],
       "system_ext-other": [],
