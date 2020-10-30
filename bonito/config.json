@@ -170,6 +170,7 @@
         "product/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED"
       ],
       "product-other": [
+        "product/etc/apns-conf.xml",
         "product/lib/libdmengine.so",
         "product/lib/libdmjavaplugin.so",
         "product/lib/libsecureuisvc_jni.so",
