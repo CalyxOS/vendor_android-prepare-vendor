@@ -152,6 +152,10 @@ done
   # Then append product
   jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "product-other" "$CONFIG_FILE" | grep -Ev '(^#|^$)' || true
   jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "product-bytecode" "$CONFIG_FILE" | grep -Ev '(^#|^$)' || true
+
+  # Then append system_ext
+  jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "system_ext-other" "$CONFIG_FILE" | grep -Ev '(^#|^$)' || true
+  jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "system_ext-bytecode" "$CONFIG_FILE" | grep -Ev '(^#|^$)' || true
 } >> "$OUT_BLOBS_FILE_TMP"
 
 # Sort merged file with all lists
