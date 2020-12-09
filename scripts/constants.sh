@@ -57,6 +57,8 @@ declare -ra VENDOR_SKIP_FILES=(
   "overlay/TeleService__auto_generated_rro_vendor.apk"
   "overlay/SystemUIGoogle__auto_generated_rro_vendor.apk"
   "overlay/SettingsProviderTest__auto_generated_rro_vendor.apk"
+  "overlay/SettingsGoogle__auto_generated_rro_vendor.apk"
+  "overlay/HbmSVManager__auto_generated_rro_vendor.apk"
 )
 
 # Files to skip from vendor partition when parsing factory images (for naked config only)
