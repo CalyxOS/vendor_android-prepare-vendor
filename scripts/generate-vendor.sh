@@ -507,6 +507,10 @@ gen_board_family_cfg_mk() {
     familyBoardCfgVendorMk="$OUTPUT_DIR/vendor/$VENDOR_DIR/$DEVICE_FAMILY/proprietary/BoardConfigVendor.mk"
     majorTarget="sunfish"
     minorTarget="sunfish"
+  elif [[ "$DEVICE_FAMILY" == "redfin" ]]; then
+    familyBoardCfgVendorMk="$OUTPUT_DIR/vendor/$VENDOR_DIR/$DEVICE_FAMILY/proprietary/BoardConfigVendor.mk"
+    majorTarget="redfin"
+    minorTarget="redfin"
   else
     return 0
   fi
