@@ -552,14 +552,6 @@
       "system-bytecode": [
       ],
       "system-other": [
-        "system/etc/permissions/privapp-permissions-google.xml",
-        "system/product/etc/permissions/vzw_mvs_permissions.xml",
-        "system/product/etc/sysconfig/google.xml",
-        "system/product/etc/sysconfig/google_build.xml",
-        "system/product/etc/sysconfig/google_vr_build.xml",
-        "system/etc/sysconfig/pixel_2017_exclusive.xml",
-        "system/product/etc/sysconfig/whitelist_com.android.omadm.service.xml", 
-        "system/product/etc/permissions/com.google.android.hardwareinfo.xml"
       ],
       "system_ext-bytecode": [],
       "system_ext-other": [
@@ -582,6 +574,7 @@
       "product-other": [
         "product/etc/ambient/matcher_tah.leveldb",
 	"product/etc/permissions/com.android.omadm.service.xml",
+	"product/etc/permissions/com.google.omadm.trigger.xml",
 	"product/etc/permissions/com.android.sdm.plugins.connmo.xml",
         "product/etc/permissions/com.android.sdm.plugins.sprintdm.xml",
 	"product/etc/permissions/com.customermobile.preload.vzw.xml",
