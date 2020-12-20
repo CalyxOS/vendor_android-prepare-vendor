@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import hashlib
 import os
@@ -8,10 +8,6 @@ import struct
 import subprocess
 import sys
 import zipfile
-
-# protobufs compiled with protoc 2.5.0 are not compatible with python3
-if sys.version_info[0] != 2:
-  raise Exception("Python 2.x is required")
 
 # from https://android.googlesource.com/platform/system/update_engine/+/refs/heads/master/scripts/update_payload/
 import update_metadata_pb2
@@ -25,7 +21,7 @@ class PayloadError(Exception):
 
 class Payload(object):
   class _PayloadHeader(object):
-    _MAGIC = 'CrAU'
+    _MAGIC = b'CrAU'
 
     def __init__(self):
       self.version = None
@@ -102,15 +98,16 @@ def parse_payload(payload_f, partition, out_f):
       r = decompress_payload('bzcat', data, e.num_blocks * BLOCK_SIZE, operation.data_sha256_hash)
       out_f.write(r)
     else:
-      raise PayloadError('Unhandled operation type (%d)' % operation.type)
+      raise PayloadError('Unhandled operation type ({} - {})'.format(operation.type,
+                         update_metadata_pb2.InstallOperation.Type.Name(operation.type)))
 
 def main(filename, output_dir, partition):
   if filename.endswith('.zip'):
     print("Extracting 'payload.bin' from OTA file...")
     ota_zf = zipfile.ZipFile(filename)
-    payload_file = open(ota_zf.extract('payload.bin', output_dir))
+    payload_file = open(ota_zf.extract('payload.bin', output_dir), 'rb')
   else:
-    payload_file = file(filename)
+    payload_file = open(filename, 'rb')
 
   payload = Payload(payload_file)
   payload.Init()
@@ -121,7 +118,7 @@ def main(filename, output_dir, partition):
       continue
     print("Extracting '%s'" % name)
     fname = os.path.join(output_dir, name)
-    out_f = open(fname, 'w')
+    out_f = open(fname, 'wb')
     try:
       parse_payload(payload, p, out_f)
     except PayloadError as e:
