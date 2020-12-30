@@ -183,7 +183,7 @@
         "bin/chre",
         "bin/dumpsys",
         "bin/hostapd_cli",
-        "bin/hw/android.hardware.atrace@1.0-service",
+        "bin/hw/android.hardware.atrace@1.0-service.pixel",
         "bin/hw/android.hardware.audio.service",
         "bin/hw/android.hardware.boot@1.1-service",
         "bin/hw/android.hardware.camera.provider@2.6-service-google",
@@ -221,7 +221,7 @@
         "etc/fs_config_dirs",
         "etc/fs_config_files",
         "etc/group",
-        "etc/init/android.hardware.atrace@1.0-service.rc",
+        "etc/init/android.hardware.atrace@1.0-service.pixel.rc",
         "etc/init/android.hardware.audio.service.rc",
         "etc/init/android.hardware.boot@1.1-service.rc",
         "etc/init/android.hardware.camera.provider@2.6-service-google.rc",
@@ -270,7 +270,7 @@
         "etc/selinux/vendor_service_contexts",
         "etc/vintf/compatibility_matrix.xml",
         "etc/vintf/manifest.xml",
-        "etc/vintf/manifest/android.hardware.atrace@1.0-service.xml",
+        "etc/vintf/manifest/android.hardware.atrace@1.0-service.pixel.xml",
         "etc/vintf/manifest/android.hardware.boot@1.1.xml",
         "etc/vintf/manifest/android.hardware.camera.provider@2.6-service-google.xml",
         "etc/vintf/manifest/android.hardware.cas@1.2-service.xml",
@@ -336,6 +336,7 @@
         "lib/libopus.so",
         "lib/libpixelhealth.so",
         "lib/libprotobuf-cpp-full-3.9.1.so",
+        "lib/libprotobuf-cpp-full.so",
         "lib/libprotobuf-cpp-lite-3.9.1.so",
         "lib/libreference-ril.so",
         "lib/libril.so",
@@ -519,6 +520,7 @@
         "lib64/libpixelhealth.so",
         "lib64/libpixelstats.so",
         "lib64/libprotobuf-cpp-full-3.9.1.so",
+        "lib64/libprotobuf-cpp-full.so",
         "lib64/libprotobuf-cpp-lite-3.9.1.so",
         "lib64/libpuresoftkeymasterdevice.so",
         "lib64/libreference-ril.so",
@@ -561,4 +563,4 @@
       ]
     }
   }
-}  
+}
