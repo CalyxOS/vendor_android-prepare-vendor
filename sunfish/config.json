@@ -246,6 +246,7 @@
         "etc/init/chre_daemon.rc",
         "etc/init/hardware.google.light@1.1-service.rc",
         "etc/init/hostapd.android.rc",
+        "etc/init/init.pixel.rc",
         "etc/init/ipacm.rc",
         "etc/init/pixelstats-vendor.sunfish.rc",
         "etc/init/vendor_flash_recovery.rc",

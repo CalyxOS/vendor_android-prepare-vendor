@@ -290,6 +290,7 @@
         "etc/init/chre_daemon.rc",
         "etc/init/hardware.google.light@1.0-service.rc",
         "etc/init/hostapd.android.rc",
+        "etc/init/hw/init.sdm845.rc",
         "etc/init/pixelstats-vendor.crosshatch.rc",
         "etc/init/small_hals.crosshatch-service.rc",
         "etc/init/vendor_flash_recovery.rc",

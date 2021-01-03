@@ -294,6 +294,7 @@
         "etc/init/boringssl_self_test.rc",
         "etc/init/chre_daemon.rc",
         "etc/init/hostapd.android.rc",
+        "etc/init/hw/init.sdm670.rc",
         "etc/init/pixelstats-vendor.bonito.rc",
         "etc/init/vendor_flash_recovery.rc",
         "etc/init/vndservicemanager.rc",
