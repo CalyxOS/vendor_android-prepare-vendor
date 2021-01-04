@@ -122,10 +122,12 @@
         "system_ext/lib/libQSEEComAPI_system.so",
         "system_ext/lib/libgralloc.qti.so",
         "system_ext/lib/libhoaeffects.qti.so",
+        "system_ext/lib/libhoaeffects_csim.so",
         "system_ext/lib/libimscamera_jni.so",
         "system_ext/lib/libimsmedia_jni.so",
         "system_ext/lib/liblistenjni.qti.so",
         "system_ext/lib/liblistensoundmodel2.qti.so",
+        "system_ext/lib/libqcc_file_agent_sys.so",
         "system_ext/lib/libqmi_cci_system.so",
         "system_ext/lib/libqmi_encdec_system.so",
         "system_ext/lib/libsdm-disp-apis.qti.so",
@@ -223,10 +225,12 @@
         "system_ext/lib64/libdiag_system.so",  
         "system_ext/lib64/libgralloc.qti.so",
         "system_ext/lib64/libhoaeffects.qti.so",
+        "system_ext/lib64/libhoaeffects_csim.so",
         "system_ext/lib64/libimscamera_jni.so",
         "system_ext/lib64/libimsmedia_jni.so",
         "system_ext/lib64/liblistenjni.qti.so",
         "system_ext/lib64/liblistensoundmodel2.qti.so",
+        "system_ext/lib64/libqcc_file_agent_sys.so",
         "system_ext/lib64/libqmi_cci_system.so",
         "system_ext/lib64/libqmi_encdec_system.so",
         "system_ext/lib64/libsdm-disp-apis.qti.so",
@@ -315,7 +319,11 @@
         "vendor/lib64/libadsprpc.so",
         "vendor/lib/libadsprpc.so"
       ],
-      "device-vendor": [],
+      "device-vendor": [
+        "PRODUCT_PROPERTY_OVERRIDES += \\",
+        "    ro.hardware.egl=adreno \\",
+        "    ro.hardware.vulkan=adreno"
+      ],
       "forced-modules": [
         "android.hardware.identity-support-lib.vendor",
         "android.hardware.sensors@2.0-ScopedWakelock.vendor",
@@ -745,6 +753,8 @@
       "BoardConfigVendor": [],
       "device-vendor": [
         "PRODUCT_PROPERTY_OVERRIDES += \\",
+        "    ro.hardware.egl=adreno \\",
+        "    ro.hardware.vulkan=adreno \\",
         "    ro.com.google.clientidbase=android-google \\",
         "    ro.error.receiver.system.apps=com.google.android.gms \\",
         "    ro.atrace.core.services=com.google.android.gms,com.google.android.gms.ui,com.google.android.gms.persistent \\",
