@@ -13,6 +13,7 @@ declare -ra SUPPORTED_DEVICES=(
   "sargo"         # Pixel 3a
   "bonito"        # Pixel 3a XL
   "sunfish"       # Pixel 4a
+  "redfin"        # Pixel 5
 )
 
 # URLs to download factory images from

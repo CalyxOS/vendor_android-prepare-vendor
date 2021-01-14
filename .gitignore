@@ -56,6 +56,10 @@ sunfish/*
 !sunfish/config.json
 !sunfish/overlays-*
 
+redfin/*
+!redfin/config.json
+!redfin/overlays-*
+
 # oatdump host tools are downloaded on first run and are not part of the repo
 hostTools/Linux/api*
 hostTools/Darwin/api*
