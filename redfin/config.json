@@ -26,7 +26,9 @@
     "naked": {
       "overlays-dir": "",
       "rro-overlays": ["CarrierConfigOverlay"],
-      "product-bytecode": [],
+      "product-bytecode": [
+        "product/priv-app/EuiccGoogle/EuiccGoogle.apk::PRESIGNED"
+      ],
       "product-other": [
         "product/etc/apns-conf.xml",
         "product/lib/libdmengine.so",
@@ -74,6 +76,8 @@
         "system_ext/framework/vendor.qti.ims.rcsconfig-V1.0-java.jar",
         "system_ext/framework/vendor.qti.latency-V2.0-java.jar",
         "system_ext/framework/vendor.qti.voiceprint-V1.0-java.jar",
+        "system_ext/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED",
+        "system_ext/priv-app/EuiccSupportPixelPermissions/EuiccSupportPixelPermissions.apk::PRESIGNED",
         "system_ext/priv-app/ims/ims.apk",
         "system_ext/priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk"
       ],
@@ -289,7 +293,8 @@
         "system_ext/lib64/vendor.qti.ims.rcsconfig@2.0.so",
         "system_ext/lib64/vendor.qti.imsrtpservice@3.0.so",
         "system_ext/lib64/vendor.qti.latency@2.0.so",
-        "system_ext/lib64/vendor.qti.voiceprint@1.0.so"
+        "system_ext/lib64/vendor.qti.voiceprint@1.0.so",
+        "system_ext/priv-app/EuiccSupportPixel/esim-full-v1.img"
       ],
       "BoardConfigVendor": [],
       "dep-dso": [
