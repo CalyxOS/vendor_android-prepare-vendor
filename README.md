@@ -151,6 +151,14 @@ Please check existing
 [issues](https://github.com/anestisb/android-prepare-vendor/issues) before
 reporting new ones
 
+## Troubleshooting
+If you encounter Python errors in the `*_pb2.py` scripts, try installing
+the protobuf-compiler (`protoc`) package and then regenerating the
+parser code:
+
+    make -C scripts/carriersettings-extractor clean all
+    make -C scripts/extract_android_ota_payload clean all
+
 ## Contributing
 If you want to contribute to device configuration files, please test against the
 target device before any pull request.
