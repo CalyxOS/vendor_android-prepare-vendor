@@ -786,10 +786,11 @@ fi
 
 # Convert the CarrierSettings protobuf files to XML format compatible with AOSP
 carrierSettingsFolder="$(dirname "$(find "${OUT_BASE}" -name carrier_list.pb | head -1)")"
-echo "[*] Converting CarrierSettings APN protobuf files to XML format compatible with AOSP"
+echo "[*] Converting CarrierSettings protobuf files to XML format compatible with AOSP"
+mkdir "$OUT_BASE/CarrierConfig"
 $EXTRACT_CARRIER_SETTINGS_SCRIPT --carrierlist "$aospCarrierListFolder" \
     --input "$carrierSettingsFolder" \
-    --output "$PRODUCT_R_ROOT/etc/" || {
+    --apns "$PRODUCT_R_ROOT/etc/" --vendor "$OUT_BASE/CarrierConfig" || {
   echo "[-] Carrier settings extract failed"
   abort 1
 }

@@ -38,7 +38,9 @@ def parse_args():
                         required=True)
     parser.add_argument('-i', '--input', help='CarrierSettings folder',
                         required=True)
-    parser.add_argument('-o', '--output', help='Output folder',
+    parser.add_argument('-a', '--apns', help='apns-conf.xml Output folder',
+                        required=True)
+    parser.add_argument('-v', '--vendor', help='vendor.xml Output folder',
                         required=True)
     return parser.parse_args()
 
@@ -48,7 +50,8 @@ def main():
 
     carrier_list_folder = args.carrierlist
     input_folder = args.input
-    output_folder = args.output
+    apns_folder = args.apns
+    vendor_folder = args.vendor
 
     carrier_id_list = CarrierIdList()
     carrier_attribute_map = {}
@@ -189,7 +192,7 @@ def main():
             self.add_attribute('user_visible', 'userVisible')
             self.add_attribute('user_editable', 'userEditable')
 
-    with open(os.path.join(output_folder, 'apns-conf.xml'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(apns_folder, 'apns-conf.xml'), 'w', encoding='utf-8') as f:
         f.write('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n\n')
         f.write('<apns version="8">\n\n')
 
@@ -291,15 +294,15 @@ def main():
         f.write('</apns>\n')
 
     # Test XML parsing.
-    ET.parse(os.path.join(output_folder, 'apns-conf.xml'))
+    ET.parse(os.path.join(apns_folder, 'apns-conf.xml'))
 
     indent(carrier_config_root)
     carrier_config_tree = ET.ElementTree(carrier_config_root)
-    carrier_config_tree.write(os.path.join(output_folder, 'vendor.xml'),
+    carrier_config_tree.write(os.path.join(vendor_folder, 'vendor.xml'),
                               encoding='utf-8', xml_declaration=True)
 
     # Test XML parsing.
-    ET.parse(os.path.join(output_folder, 'vendor.xml'))
+    ET.parse(os.path.join(vendor_folder, 'vendor.xml'))
 
 if __name__ == '__main__':
     main()
