@@ -40,19 +40,11 @@ def parse_args():
                         required=True)
     parser.add_argument('-o', '--output', help='Output folder',
                         required=True)
-    parser.add_argument('--apn', action='store_true',
-                        help='Generate apns-conf.xml')
-    parser.add_argument('--vendor', action='store_true',
-                        help='Generate vendor.xml')
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
-
-    if args.apn is None and args.vendor is None:
-        print('Argument --apn or --vendor is required')
-        sys.exit(1)
 
     carrier_list_folder = args.carrierlist
     input_folder = args.input
@@ -95,221 +87,219 @@ def main():
 
     carrier_config_root = ET.Element('carrier_config_list')
 
-    if args.apn:
-        # Unfortunately, python processors like xml and lxml, as well as command-line
-        # utilities like tidy, do not support the exact style used by AOSP for
-        # apns-conf.xml:
-        #
-        #  * indent: 2 spaces
-        #  * attribute indent: 4 spaces
-        #  * blank lines between elements
-        #  * attributes after first indented on separate lines
-        #  * closing tags of multi-line elements on separate, unindented lines
-        #
-        # Therefore, we build the file without using an XML processor.
+    # Unfortunately, python processors like xml and lxml, as well as command-line
+    # utilities like tidy, do not support the exact style used by AOSP for
+    # apns-conf.xml:
+    #
+    #  * indent: 2 spaces
+    #  * attribute indent: 4 spaces
+    #  * blank lines between elements
+    #  * attributes after first indented on separate lines
+    #  * closing tags of multi-line elements on separate, unindented lines
+    #
+    # Therefore, we build the file without using an XML processor.
 
-        class ApnElement:
-            def __init__(self, apn, carrier_id):
-                self.apn = apn
-                self.carrier_id = carrier_id
-                self.attributes = OrderedDict()
-                self.add_attributes()
+    class ApnElement:
+        def __init__(self, apn, carrier_id):
+            self.apn = apn
+            self.carrier_id = carrier_id
+            self.attributes = OrderedDict()
+            self.add_attributes()
 
-            def add_attribute(self, key, field=None, value=None):
-                if value is not None:
-                    self.attributes[key] = value
-                else:
-                    if field is None:
-                        field = key
-                    if self.apn.HasField(field):
-                        enum_type = self.apn.DESCRIPTOR.fields_by_name[field].enum_type
-                        value = getattr(self.apn, field)
-                        if enum_type is None:
-                            if isinstance(value, bool):
-                                self.attributes[key] = str(value).lower()
-                            else:
-                                self.attributes[key] = str(value)
+        def add_attribute(self, key, field=None, value=None):
+            if value is not None:
+                self.attributes[key] = value
+            else:
+                if field is None:
+                    field = key
+                if self.apn.HasField(field):
+                    enum_type = self.apn.DESCRIPTOR.fields_by_name[field].enum_type
+                    value = getattr(self.apn, field)
+                    if enum_type is None:
+                        if isinstance(value, bool):
+                            self.attributes[key] = str(value).lower()
                         else:
-                            self.attributes[key] = \
-                                enum_type.values_by_number[value].name
-
-            def add_attributes(self):
-                try:
-                    self.add_attribute(
-                        'carrier_id',
-                        value=str(carrier_attribute_map[(
-                            self.carrier_id.mccMnc,
-                            self.carrier_id.imsi,
-                            self.carrier_id.spn.lower(),
-                            '',
-                            self.carrier_id.gid1.lower(),
-                            self.carrier_id.gid2.lower(),
-                            '',
-                            '',
-                            '',
-                        )])
-                    )
-                except KeyError:
-                    pass
-                self.add_attribute('mcc', value=self.carrier_id.mccMnc[:3])
-                self.add_attribute('mnc', value=self.carrier_id.mccMnc[3:])
-                self.add_attribute('apn', 'value')
-                self.add_attribute('proxy')
-                self.add_attribute('port')
-                self.add_attribute('mmsc')
-                self.add_attribute('mmsproxy', 'mmscProxy')
-                self.add_attribute('mmsport', 'mmscProxyPort')
-                self.add_attribute('user')
-                self.add_attribute('password')
-                self.add_attribute('server')
-                self.add_attribute('authtype')
-                self.add_attribute(
-                    'type',
-                    value=','.join(
-                        apn.DESCRIPTOR.fields_by_name[
-                            'type'
-                        ].enum_type.values_by_number[i].name
-                        for i in self.apn.type
-                    ).lower(),
-                )
-                self.add_attribute('protocol')
-                self.add_attribute('roaming_protocol', 'roamingProtocol')
-                self.add_attribute('carrier_enabled', 'carrierEnabled')
-                self.add_attribute('bearer_bitmask', 'bearerBitmask')
-                self.add_attribute('profile_id', 'profileId')
-                self.add_attribute('modem_cognitive', 'modemCognitive')
-                self.add_attribute('max_conns', 'maxConns')
-                self.add_attribute('wait_time', 'waitTime')
-                self.add_attribute('max_conns_time', 'maxConnsTime')
-                self.add_attribute('mtu')
-                mvno = self.carrier_id.WhichOneof('mvno')
-                if mvno:
-                    self.add_attribute(
-                        'mvno_type',
-                        value='gid' if mvno.startswith('gid') else mvno,
-                    )
-                    self.add_attribute(
-                        'mvno_match_data',
-                        value=getattr(self.carrier_id, mvno),
-                    )
-                self.add_attribute('apn_set_id', 'apnSetId')
-                # No source for integer carrier_id?
-                self.add_attribute('skip_464xlat', 'skip464Xlat')
-                self.add_attribute('user_visible', 'userVisible')
-                self.add_attribute('user_editable', 'userEditable')
-
-        with open(os.path.join(output_folder, 'apns-conf.xml'), 'w', encoding='utf-8') as f:
-            f.write('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n\n')
-            f.write('<apns version="8">\n\n')
-
-            for entry in carrier_list.entry:
-                setting = all_settings[entry.canonicalName]
-                for apn in setting.apns.apn:
-                    f.write('  <apn carrier={}\n'.format(quoteattr(apn.name)))
-                    apn_element = ApnElement(apn, entry.carrierId)
-                    for (key, value) in apn_element.attributes.items():
-                        f.write('      {}={}\n'.format(escape(key), quoteattr(value)))
-                    f.write('  />\n\n')
-
-                carrier_config_element = ET.SubElement(
-                    carrier_config_root,
-                    'carrier_config',
-                )
-                carrier_config_element.set('mcc', entry.carrierId.mccMnc[:3])
-                carrier_config_element.set('mnc', entry.carrierId.mccMnc[3:])
-                for field in ['spn', 'imsi', 'gid1', 'gid2']:
-                    if entry.carrierId.HasField(field):
-                        carrier_config_element.set(
-                            field,
-                            getattr(entry.carrierId, field),
-                        )
-                for config in setting.configs.config:
-                    value_type = config.WhichOneof('value')
-                    if value_type == 'textValue':
-                        carrier_config_subelement = ET.SubElement(
-                            carrier_config_element,
-                            'string',
-                        )
-                        carrier_config_subelement.set('name', config.key)
-                        carrier_config_subelement.text = getattr(config, value_type)
-                    elif value_type == 'intValue':
-                        carrier_config_subelement = ET.SubElement(
-                            carrier_config_element,
-                            'int',
-                        )
-                        carrier_config_subelement.set('name', config.key)
-                        carrier_config_subelement.set(
-                            'value',
-                            str(getattr(config, value_type)),
-                        )
-                    elif value_type == 'longValue':
-                        carrier_config_subelement = ET.SubElement(
-                            carrier_config_element,
-                            'long',
-                        )
-                        carrier_config_subelement.set('name', config.key)
-                        carrier_config_subelement.set(
-                            'value',
-                            str(getattr(config, value_type)),
-                        )
-                    elif value_type == 'boolValue':
-                        carrier_config_subelement = ET.SubElement(
-                            carrier_config_element,
-                            'boolean',
-                        )
-                        carrier_config_subelement.set('name', config.key)
-                        carrier_config_subelement.set(
-                            'value',
-                            str(getattr(config, value_type)).lower(),
-                        )
-                    elif value_type == 'textArray':
-                        carrier_config_subelement = ET.SubElement(
-                            carrier_config_element,
-                            'string-array',
-                        )
-                        carrier_config_subelement.set('name', config.key)
-                        carrier_config_subelement.set(
-                            'num',
-                            str(len(getattr(config, value_type).item)),
-                        )
-                        for value in getattr(config, value_type).item:
-                            carrier_config_item = ET.SubElement(
-                                carrier_config_subelement,
-                                'item',
-                            )
-                            carrier_config_item.set('value', value)
-                    elif value_type == 'intArray':
-                        carrier_config_subelement = ET.SubElement(
-                            carrier_config_element,
-                            'int-array',
-                        )
-                        carrier_config_subelement.set('name', config.key)
-                        carrier_config_subelement.set(
-                            'num',
-                            str(len(getattr(config, value_type).item)),
-                        )
-                        for value in getattr(config, value_type).item:
-                            carrier_config_item = ET.SubElement(
-                                carrier_config_subelement,
-                                'item',
-                            )
-                            carrier_config_item.set('value', str(value))
+                            self.attributes[key] = str(value)
                     else:
-                        raise TypeError("Unknown value type: {}".format(value_type))
+                        self.attributes[key] = \
+                            enum_type.values_by_number[value].name
 
-            f.write('</apns>\n')
+        def add_attributes(self):
+            try:
+                self.add_attribute(
+                    'carrier_id',
+                    value=str(carrier_attribute_map[(
+                        self.carrier_id.mccMnc,
+                        self.carrier_id.imsi,
+                        self.carrier_id.spn.lower(),
+                        '',
+                        self.carrier_id.gid1.lower(),
+                        self.carrier_id.gid2.lower(),
+                        '',
+                        '',
+                        '',
+                    )])
+                )
+            except KeyError:
+                pass
+            self.add_attribute('mcc', value=self.carrier_id.mccMnc[:3])
+            self.add_attribute('mnc', value=self.carrier_id.mccMnc[3:])
+            self.add_attribute('apn', 'value')
+            self.add_attribute('proxy')
+            self.add_attribute('port')
+            self.add_attribute('mmsc')
+            self.add_attribute('mmsproxy', 'mmscProxy')
+            self.add_attribute('mmsport', 'mmscProxyPort')
+            self.add_attribute('user')
+            self.add_attribute('password')
+            self.add_attribute('server')
+            self.add_attribute('authtype')
+            self.add_attribute(
+                'type',
+                value=','.join(
+                    apn.DESCRIPTOR.fields_by_name[
+                        'type'
+                    ].enum_type.values_by_number[i].name
+                    for i in self.apn.type
+                ).lower(),
+            )
+            self.add_attribute('protocol')
+            self.add_attribute('roaming_protocol', 'roamingProtocol')
+            self.add_attribute('carrier_enabled', 'carrierEnabled')
+            self.add_attribute('bearer_bitmask', 'bearerBitmask')
+            self.add_attribute('profile_id', 'profileId')
+            self.add_attribute('modem_cognitive', 'modemCognitive')
+            self.add_attribute('max_conns', 'maxConns')
+            self.add_attribute('wait_time', 'waitTime')
+            self.add_attribute('max_conns_time', 'maxConnsTime')
+            self.add_attribute('mtu')
+            mvno = self.carrier_id.WhichOneof('mvno')
+            if mvno:
+                self.add_attribute(
+                    'mvno_type',
+                    value='gid' if mvno.startswith('gid') else mvno,
+                )
+                self.add_attribute(
+                    'mvno_match_data',
+                    value=getattr(self.carrier_id, mvno),
+                )
+            self.add_attribute('apn_set_id', 'apnSetId')
+            # No source for integer carrier_id?
+            self.add_attribute('skip_464xlat', 'skip464Xlat')
+            self.add_attribute('user_visible', 'userVisible')
+            self.add_attribute('user_editable', 'userEditable')
 
-        # Test XML parsing.
-        ET.parse(os.path.join(output_folder, 'apns-conf.xml'))
+    with open(os.path.join(output_folder, 'apns-conf.xml'), 'w', encoding='utf-8') as f:
+        f.write('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n\n')
+        f.write('<apns version="8">\n\n')
 
-    if args.vendor:
-        indent(carrier_config_root)
-        carrier_config_tree = ET.ElementTree(carrier_config_root)
-        carrier_config_tree.write(os.path.join(output_folder, 'vendor.xml'),
-                                  encoding='utf-8', xml_declaration=True)
+        for entry in carrier_list.entry:
+            setting = all_settings[entry.canonicalName]
+            for apn in setting.apns.apn:
+                f.write('  <apn carrier={}\n'.format(quoteattr(apn.name)))
+                apn_element = ApnElement(apn, entry.carrierId)
+                for (key, value) in apn_element.attributes.items():
+                    f.write('      {}={}\n'.format(escape(key), quoteattr(value)))
+                f.write('  />\n\n')
 
-        # Test XML parsing.
-        ET.parse(os.path.join(output_folder, 'vendor.xml'))
+            carrier_config_element = ET.SubElement(
+                carrier_config_root,
+                'carrier_config',
+            )
+            carrier_config_element.set('mcc', entry.carrierId.mccMnc[:3])
+            carrier_config_element.set('mnc', entry.carrierId.mccMnc[3:])
+            for field in ['spn', 'imsi', 'gid1', 'gid2']:
+                if entry.carrierId.HasField(field):
+                    carrier_config_element.set(
+                        field,
+                        getattr(entry.carrierId, field),
+                    )
+            for config in setting.configs.config:
+                value_type = config.WhichOneof('value')
+                if value_type == 'textValue':
+                    carrier_config_subelement = ET.SubElement(
+                        carrier_config_element,
+                        'string',
+                    )
+                    carrier_config_subelement.set('name', config.key)
+                    carrier_config_subelement.text = getattr(config, value_type)
+                elif value_type == 'intValue':
+                    carrier_config_subelement = ET.SubElement(
+                        carrier_config_element,
+                        'int',
+                    )
+                    carrier_config_subelement.set('name', config.key)
+                    carrier_config_subelement.set(
+                        'value',
+                        str(getattr(config, value_type)),
+                    )
+                elif value_type == 'longValue':
+                    carrier_config_subelement = ET.SubElement(
+                        carrier_config_element,
+                        'long',
+                    )
+                    carrier_config_subelement.set('name', config.key)
+                    carrier_config_subelement.set(
+                        'value',
+                        str(getattr(config, value_type)),
+                    )
+                elif value_type == 'boolValue':
+                    carrier_config_subelement = ET.SubElement(
+                        carrier_config_element,
+                        'boolean',
+                    )
+                    carrier_config_subelement.set('name', config.key)
+                    carrier_config_subelement.set(
+                        'value',
+                        str(getattr(config, value_type)).lower(),
+                    )
+                elif value_type == 'textArray':
+                    carrier_config_subelement = ET.SubElement(
+                        carrier_config_element,
+                        'string-array',
+                    )
+                    carrier_config_subelement.set('name', config.key)
+                    carrier_config_subelement.set(
+                        'num',
+                        str(len(getattr(config, value_type).item)),
+                    )
+                    for value in getattr(config, value_type).item:
+                        carrier_config_item = ET.SubElement(
+                            carrier_config_subelement,
+                            'item',
+                        )
+                        carrier_config_item.set('value', value)
+                elif value_type == 'intArray':
+                    carrier_config_subelement = ET.SubElement(
+                        carrier_config_element,
+                        'int-array',
+                    )
+                    carrier_config_subelement.set('name', config.key)
+                    carrier_config_subelement.set(
+                        'num',
+                        str(len(getattr(config, value_type).item)),
+                    )
+                    for value in getattr(config, value_type).item:
+                        carrier_config_item = ET.SubElement(
+                            carrier_config_subelement,
+                            'item',
+                        )
+                        carrier_config_item.set('value', str(value))
+                else:
+                    raise TypeError("Unknown value type: {}".format(value_type))
+
+        f.write('</apns>\n')
+
+    # Test XML parsing.
+    ET.parse(os.path.join(output_folder, 'apns-conf.xml'))
+
+    indent(carrier_config_root)
+    carrier_config_tree = ET.ElementTree(carrier_config_root)
+    carrier_config_tree.write(os.path.join(output_folder, 'vendor.xml'),
+                              encoding='utf-8', xml_declaration=True)
+
+    # Test XML parsing.
+    ET.parse(os.path.join(output_folder, 'vendor.xml'))
 
 if __name__ == '__main__':
     main()
