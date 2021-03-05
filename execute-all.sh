@@ -789,7 +789,7 @@ carrierSettingsFolder="$(dirname "$(find "${OUT_BASE}" -name carrier_list.pb | h
 echo "[*] Converting CarrierSettings APN protobuf files to XML format compatible with AOSP"
 $EXTRACT_CARRIER_SETTINGS_SCRIPT --carrierlist "$aospCarrierListFolder" \
     --input "$carrierSettingsFolder" \
-    --output "$PRODUCT_R_ROOT/etc/" --apn || {
+    --output "$PRODUCT_R_ROOT/etc/" || {
   echo "[-] Carrier settings extract failed"
   abort 1
 }
