@@ -520,7 +520,7 @@ gen_board_family_cfg_mk() {
   fi
 
   {
-    echo "# [$EXEC_DATE] Auto-generated file, do not edit"
+    echo "# Auto-generated file, do not edit"
     echo ""
     echo "ifneq (\$(filter $minorTarget,\$(TARGET_DEVICE)),)"
     echo "  LOCAL_STEM := $minorTarget/BoardConfigVendorPartial.mk"
@@ -1178,7 +1178,6 @@ DEVICE_FAMILY=""
 VENDOR=""
 APK_SYSTEM_LIB_BLOBS_LIST="$TMP_WORK_DIR/apk_system_lib_blobs.txt"
 RUNTIME_EXTRA_BLOBS_LIST="$TMP_WORK_DIR/runtime_extra_blobs.txt"
-EXEC_DATE="$(date +%Y-%m-%d)"
 
 # Check that system tools exist
 for i in "${SYS_TOOLS[@]}"
@@ -1329,7 +1328,7 @@ initConfig "$ANDROID_MK"
 # And prefix them
 find "$OUTPUT_DIR/vendor/$VENDOR_DIR" -type f -name '*.mk' | while read -r file
 do
-  echo -e "# [$EXEC_DATE] Auto-generated file, do not edit\n" > "$file"
+  echo -e "# Auto-generated file, do not edit\n" > "$file"
 done
 
 # Update from DSO_MODULES array from DEP_DSO_BLOBS_LIST
