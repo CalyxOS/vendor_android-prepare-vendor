@@ -831,7 +831,7 @@ fi
 # generate-vendor.sh script will rsync output intermediates
 if [[ "$AOSP_ROOT" == "" ]]; then
   echo "[*] Import '$OUT_BASE/vendor' vendor blobs to AOSP root"
-  echo "[*] Import '$OUT_BASE/vendor_overlay' vendor overlays to AOSP root"
+  echo "[*] Import '$OUT_BASE/vendor/google_devices/$DEVICE/overlay' vendor overlays to AOSP root"
 fi
 
 echo "[*] All actions completed successfully"
