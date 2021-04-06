@@ -27,7 +27,7 @@
   "DeviceVendorMk": "bramble/proprietary/device-vendor.mk",
   "api-30": {
     "naked": {
-      "overlays-dir": "",
+      "overlays-dir": "carrier-naked",
       "product-bytecode": [
         "product/priv-app/EuiccGoogle/EuiccGoogle.apk::PRESIGNED",
         "product/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED"
