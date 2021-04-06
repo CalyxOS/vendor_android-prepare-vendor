@@ -1302,7 +1302,7 @@ if [[ "$DEVICE" != "$DEVICE_FAMILY" ]]; then
 fi
 
 # Prepare vendor overlays output directory structure
-readonly REL_VENDOR_OVERLAY="vendor_overlay/$VENDOR_DIR/$DEVICE/overlay"
+readonly REL_VENDOR_OVERLAY="vendor/$VENDOR_DIR/$DEVICE/overlay"
 OUTPUT_VENDOR_OVERLAY="$OUTPUT_DIR/$REL_VENDOR_OVERLAY"
 if [ -d "$OUTPUT_VENDOR_OVERLAY" ]; then
   rm -rf "${OUTPUT_VENDOR_OVERLAY:?}"/*
@@ -1453,12 +1453,12 @@ if [[ "$AOSP_ROOT" != "" ]]; then
 
   # Vendor overlays are always under separate directories so it's safe to force update
   if [[ "$OVERLAYS_DIR" != "" ]]; then
-    mkdir -p "$AOSP_ROOT/vendor_overlay/$VENDOR_DIR"
-    rsync -arz --delete "$OUTPUT_DIR/vendor_overlay/$VENDOR_DIR/" "$AOSP_ROOT/vendor_overlay/$VENDOR_DIR/" || {
+    mkdir -p "$AOSP_ROOT/vendor/$VENDOR_DIR"
+    rsync -arz --delete "$OUTPUT_DIR/vendor/$VENDOR_DIR/" "$AOSP_ROOT/vendor/$VENDOR_DIR/" || {
       echo "[-] rsync failed"
       abort 1
     }
-    echo "[*] Vendor overlays copied to '$AOSP_ROOT/vendor_overlay/$VENDOR_DIR'"
+    echo "[*] Vendor overlays copied to '$AOSP_ROOT/vendor/$VENDOR_DIR/$DEVICE/overlay'"
   fi
 fi
 
