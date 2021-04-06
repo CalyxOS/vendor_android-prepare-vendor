@@ -26,7 +26,7 @@
   "DeviceVendorMk": "crosshatch/proprietary/device-vendor.mk",
   "api-30": {
     "naked": {
-      "overlays-dir": "",
+      "overlays-dir": "carrier-naked",
       "system-bytecode": [
         "system/app/datastatusnotification/datastatusnotification.apk",
         "system/app/ims/ims.apk",
