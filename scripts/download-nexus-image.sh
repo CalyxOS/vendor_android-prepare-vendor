@@ -170,6 +170,6 @@ fi
 
 echo "[*] Downloading image from '$url'"
 outFile=$OUTPUT_DIR/$(basename "$url")
-curl -L -C - -o "$outFile" "$url"
+curl --http1.1 -L -C - -o "$outFile" "$url"
 
 abort 0
