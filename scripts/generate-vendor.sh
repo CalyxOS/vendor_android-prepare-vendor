@@ -1069,8 +1069,12 @@ update_ab_ota_partitions() {
 }
 
 gen_android_mk() {
-  local root path targetProductDevice
+  local root path targetProductDevice build_id_error_warning
+  build_id_error_warning=error
   targetProductDevice="$DEVICE"
+  if [[ "$targetProductDevice" == "walleye" || "$targetProductDevice" == "taimen" ]]; then
+    build_id_error_warning=warning
+  fi
   {
     echo 'LOCAL_PATH := $(call my-dir)'
 
@@ -1078,7 +1082,7 @@ gen_android_mk() {
     echo ""
     echo "expected_build_id := \$(shell cat vendor/$VENDOR_DIR/$DEVICE/build_id.txt)"
     echo 'ifneq ($(BUILD_ID),$(expected_build_id))'
-    echo '    $(error "Expected BUILD_ID is $(expected_build_id) and currently building with $(BUILD_ID)")'
+    echo '    $($(build_id_error_warning) "Expected BUILD_ID is $(expected_build_id) and currently building with $(BUILD_ID)")'
     echo 'endif'
     echo ""
     echo "include vendor/$VENDOR_DIR/$DEVICE/AndroidBoardVendor.mk"
