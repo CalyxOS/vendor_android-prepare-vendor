@@ -27,6 +27,7 @@
   "api-30": {
     "naked": {
       "overlays-dir": "",
+      "rro-overlays": ["CarrierConfigOverlay"],
       "system-bytecode": [
         "system/app/datastatusnotification/datastatusnotification.apk",
         "system/app/ims/ims.apk",

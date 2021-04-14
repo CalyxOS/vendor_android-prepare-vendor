@@ -28,6 +28,7 @@
   "api-30": {
     "naked": {
       "overlays-dir": "",
+      "rro-overlays": ["CarrierConfigOverlay"],
       "product-bytecode": [
         "product/priv-app/EuiccGoogle/EuiccGoogle.apk::PRESIGNED",
         "product/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED"
@@ -756,6 +757,7 @@
     },
     "full": {
       "overlays-dir": "",
+      "rro-overlays": [""],
       "system-bytecode": [
       ],
       "system-other": [
