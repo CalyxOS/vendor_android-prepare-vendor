@@ -26,7 +26,7 @@
   "DeviceVendorMk": "bonito/proprietary/device-vendor.mk",
   "api-30": {
     "naked": {
-      "overlays-dir": "carrier-naked",
+      "overlays-dir": "",
       "system-bytecode": [
         "system/app/QtiTelephonyService/QtiTelephonyService.apk",
         "system/app/datastatusnotification/datastatusnotification.apk",

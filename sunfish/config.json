@@ -25,7 +25,7 @@
   "DeviceVendorMk": "sunfish/proprietary/device-vendor.mk",
   "api-30": {
     "naked": {
-      "overlays-dir": "carrier-naked",
+      "overlays-dir": "",
       "product-bytecode": [
         "product/priv-app/EuiccGoogle/EuiccGoogle.apk::PRESIGNED",
         "product/priv-app/EuiccSupportPixel/EuiccSupportPixel.apk::PRESIGNED"

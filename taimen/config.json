@@ -27,7 +27,7 @@
   "DeviceVendorMk": "taimen/proprietary/device-vendor.mk",
   "api-30": {
     "naked": {
-      "overlays-dir": "carrier-naked",
+      "overlays-dir": "",
       "system-bytecode": [
         "system/app/ims/ims.apk",
         "system/app/uceShimService/uceShimService.apk",
