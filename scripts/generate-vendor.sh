@@ -1355,6 +1355,9 @@ if [[ "$RRO_OVERLAYS" != "" ]]; then
   mkdir -p "$OUTPUT_VENDOR_RRO_OVERLAYS"
 fi
 
+# Create soong namespace to avoid conflicts between devices
+cp -a Android.bp "$OUTPUT_VENDOR"/
+
 # Prepare generated makefiles
 # Master ones included from AOSP device profiles
 ANDROID_MK="$OUTPUT_DIR/vendor/$VENDOR_DIR/$(jqRawStrTop "AndroidMk" "$CONFIG_FILE")"
