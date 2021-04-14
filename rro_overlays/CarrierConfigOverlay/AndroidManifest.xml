@@ -15,9 +15,9 @@
 -->
 <!-- Pixel specific wifi overlays -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.carrierconfig.apv"
-    android:versionCode="1"
-    android:versionName="1.0">
+    package="com.android.carrierconfig.auto_generated_rro_vendor__"
+    android:versionCode="2"
+    android:versionName="1.0.1">
     <application android:hasCode="false" />
     <overlay
       android:targetPackage="com.android.carrierconfig"
