@@ -27,6 +27,7 @@
   "api-30": {
     "naked": {
       "overlays-dir": "",
+      "rro-overlays": ["CarrierConfigOverlay"],
       "system-bytecode": [
         "system/app/QtiTelephonyService/QtiTelephonyService.apk",
         "system/app/datastatusnotification/datastatusnotification.apk",

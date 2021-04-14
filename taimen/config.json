@@ -28,6 +28,7 @@
   "api-30": {
     "naked": {
       "overlays-dir": "",
+      "rro-overlays": ["CarrierConfigOverlay"],
       "system-bytecode": [
         "system/app/ims/ims.apk",
         "system/app/uceShimService/uceShimService.apk",

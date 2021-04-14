@@ -26,6 +26,7 @@
   "api-30": {
     "naked": {
       "overlays-dir": "",
+      "rro-overlays": ["CarrierConfigOverlay"],
       "product-bytecode": [],
       "product-other": [
         "product/etc/apns-conf.xml",
