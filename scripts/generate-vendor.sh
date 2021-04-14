@@ -364,6 +364,40 @@ update_vendor_blobs_mk() {
   fi
 }
 
+process_rro_overlays() {
+  local module
+
+  if [[ "$RRO_OVERLAYS" == "" ]]; then
+    return
+  fi
+
+  {
+    echo "# Runtime Resource overlays"
+    echo 'PRODUCT_PACKAGES += \'
+    echo "$RRO_OVERLAYS" | grep -Ev '(^#|^$)' | while read -r module
+    do
+      echo "    $module \\"
+    done
+  } >> "$DEVICE_VENDOR_MK"
+  strip_trail_slash_from_file "$DEVICE_VENDOR_MK"
+}
+
+copy_rro_overlays() {
+  local module
+
+  if [[ "$RRO_OVERLAYS" == "" ]]; then
+    return
+  fi
+
+  echo "$RRO_OVERLAYS" | grep -Ev '(^#|^$)' | while read -r module
+  do
+    # Copy device-specific bits
+    [[ -d "$DEVICE_CONFIG_DIR/rro_overlays/$module" ]] && cp -a "$DEVICE_CONFIG_DIR/rro_overlays/$module" "$OUTPUT_VENDOR_RRO_OVERLAYS"
+    # Copy common bits
+    [[ -d "$DEVICE_CONFIG_DIR/../rro_overlays/$module" ]] && cp -a "$DEVICE_CONFIG_DIR/../rro_overlays/$module" "$OUTPUT_VENDOR_RRO_OVERLAYS"
+  done
+}
+
 process_extra_modules() {
   local module
 
@@ -1243,6 +1277,7 @@ isValidApiLevel "$API_LEVEL"
 readonly DEVICE_CONFIG_DIR="$(dirname "$CONFIG_FILE")"
 readonly BLOBS_LIST="$DEVICE_CONFIG_DIR/proprietary-blobs.txt"
 readonly OVERLAYS_DIR="$(setOverlaysDir)"
+readonly RRO_OVERLAYS="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "rro-overlays" "$CONFIG_FILE")"
 readonly DEP_DSO_BLOBS_LIST="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "dep-dso" "$CONFIG_FILE" | grep -Ev '(^#|^$)')"
 readonly MK_FLAGS_LIST="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "BoardConfigVendor" "$CONFIG_FILE")"
 readonly DEVICE_VENDOR_CONFIG="$(jqIncRawArray "$API_LEVEL" "$CONFIG_TYPE" "device-vendor" "$CONFIG_FILE")"
@@ -1309,6 +1344,17 @@ if [[ "$OVERLAYS_DIR" != "" ]]; then
   mkdir -p "$OUTPUT_VENDOR_OVERLAY"
 fi
 
+# Prepare Runtime Resource overlays
+readonly REL_VENDOR_RRO_OVERLAYS="vendor/$VENDOR_DIR/$DEVICE/rro_overlays"
+OUTPUT_VENDOR_RRO_OVERLAYS="$OUTPUT_DIR/$REL_VENDOR_RRO_OVERLAYS"
+if [ -d "$OUTPUT_VENDOR_RRO_OVERLAYS" ]; then
+  rm -rf "${OUTPUT_VENDOR_RRO_OVERLAYS:?}"/*
+fi
+
+if [[ "$RRO_OVERLAYS" != "" ]]; then
+  mkdir -p "$OUTPUT_VENDOR_RRO_OVERLAYS"
+fi
+
 # Prepare generated makefiles
 # Master ones included from AOSP device profiles
 ANDROID_MK="$OUTPUT_DIR/vendor/$VENDOR_DIR/$(jqRawStrTop "AndroidMk" "$CONFIG_FILE")"
@@ -1365,6 +1411,10 @@ if [[ "$OVERLAYS_DIR" != "" ]]; then
   cp -a "$OVERLAYS_DIR"/* "$OUTPUT_VENDOR_OVERLAY"
   echo -e "DEVICE_PACKAGE_OVERLAYS += vendor/$VENDOR_DIR/\$(VENDOR_DEVICE)/overlay\n" >> "$DEVICE_VENDOR_MK"
 fi
+
+# Build and copy RROs
+process_rro_overlays
+copy_rro_overlays
 
 # Generate AndroidBoardVendor.mk with radio stuff (baseband & bootloader)
 echo "[*] Generating 'AndroidBoardVendor.mk'"
