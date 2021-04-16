@@ -381,7 +381,7 @@ do
       BUILDID=$(echo "$2" | tr '[:upper:]' '[:lower:]')
       shift
       ;;
-    -i|--imgs)
+    -i|--img|--imgs)
       INPUT_IMG="$(_realpath "$2")"
       shift
       ;;
