@@ -634,12 +634,7 @@ if [[ "$API_LEVEL" == "" ]]; then
 fi
 check_supported_api
 
-# For Pixel 2 device Google bumped libart oat version leaving other devices untouched
-if [[ ( "$DEVICE" == "walleye" || "$DEVICE" == "taimen" ) && $API_LEVEL -eq 26 ]]; then
-  ART_API_LEVEL="$API_LEVEL""_2"
-else
-  ART_API_LEVEL="$API_LEVEL"
-fi
+ART_API_LEVEL="$API_LEVEL"
 
 
 echo "[*] Processing with 'API-$API_LEVEL $CONFIG_TYPE' configuration"

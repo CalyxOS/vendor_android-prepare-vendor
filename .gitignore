@@ -1,13 +1,5 @@
 .DS_Store
 
-walleye/*
-!walleye/config.json
-!walleye/overlays-*
-
-taimen/*
-!taimen/config.json
-!taimen/overlays-*
-
 blueline/*
 !blueline/config.json
 !blueline/overlays-*
