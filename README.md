@@ -137,8 +137,6 @@ vendor blobs).
 ## Supported devices
 | Device                          | API 23                      | API 24           | API 25           | API 26  | API 27  | API 28  | API 29  |
 | ------------------------------- | --------------------------- | -----------------| -----------------| --------| --------| --------| --------|
-| Pixel 2 walleye                 | N/A                         | N/A              | N/A              | oatdump | oatdump | oatdump | oatdump |
-| Pixel 2 XL taimen               | N/A                         | N/A              | N/A              | oatdump | oatdump | oatdump | oatdump |
 | Pixel 3 blueline                | N/A                         | N/A              | N/A              | N/A     | N/A     | oatdump | oatdump |
 | Pixel 3 XL crosshatch           | N/A                         | N/A              | N/A              | N/A     | N/A     | oatdump | oatdump |
 | Pixel 3a sargo                  | N/A                         | N/A              | N/A              | N/A     | N/A     | oatdump | oatdump |

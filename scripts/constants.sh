@@ -4,8 +4,6 @@
 
 # List of supported devices
 declare -ra SUPPORTED_DEVICES=(
-  "walleye"       # Pixel 2
-  "taimen"        # Pixel 2 XL
   "blueline"      # Pixel 3
   "crosshatch"    # Pixel 3 XL
   "flame"         # Pixel 4
