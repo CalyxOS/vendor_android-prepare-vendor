@@ -1,25 +1,5 @@
 .DS_Store
 
-angler/*
-!angler/config.json
-!angler/overlays-*
-
-bullhead/*
-!bullhead/config.json
-!bullhead/overlays-*
-
-flounder/*
-!flounder/config.json
-!flounder/overlays-*
-
-sailfish/*
-!sailfish/config.json
-!sailfish/overlays-*
-
-marlin/*
-!marlin/config.json
-!marlin/overlays-*
-
 walleye/*
 !walleye/config.json
 !walleye/overlays-*
