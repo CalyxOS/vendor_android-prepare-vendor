@@ -136,6 +136,11 @@ do
     continue
   fi
 
+  # Skip all kernel modules
+  if [[ ${FILE##*.} == "ko" ]]; then
+    continue
+  fi
+
   echo "vendor/$FILE" >> "$OUT_BLOBS_FILE_TMP"
 done
 
