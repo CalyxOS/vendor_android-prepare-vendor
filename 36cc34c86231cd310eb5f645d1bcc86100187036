@@ -16,6 +16,23 @@
       "message": "\u003c3\n\nA better solution would be to support excluding folders, then we can add `vendor/lib/modules` to the global vendor-skip-files equivalent.",
       "revId": "36cc34c86231cd310eb5f645d1bcc86100187036",
       "serverId": "35266860-6252-469c-a67d-185064479fc0"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d171c025_bdcc49e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-14T23:32:35Z",
+      "side": 1,
+      "message": "Let\u0027s just do\n\nhttps://review.calyxos.org/c/CalyxOS/vendor_android-prepare-vendor/+/4489\n\nI\u0027ve seen at least one build add new modules, which won\u0027t be fun to track and maintain.",
+      "revId": "36cc34c86231cd310eb5f645d1bcc86100187036",
+      "serverId": "35266860-6252-469c-a67d-185064479fc0"
     }
   ]
 }
