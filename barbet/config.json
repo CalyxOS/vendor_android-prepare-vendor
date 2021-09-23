@@ -5,7 +5,6 @@
   "aosp-vendor-dir": "google_devices",
   "device-family": "barbet",
   "supported-apis": ["api-30"],
-  "extra-partitions": [],
   "ota-partitions": [
     "abl",
     "aop",
