@@ -67,7 +67,12 @@ def main():
                         "apn_expand_bool",
                         "allow_adding_apns_bool",
                         "read_only_apn_types_string_array",
-                        "read_only_apn_fields_string_array"]
+                        "read_only_apn_fields_string_array",
+                        # Disable intents to carrier apps post-update
+                        "ci_action_on_sys_update_bool",
+                        "ci_action_on_sys_update_extra_string",
+                        "ci_action_on_sys_update_extra_val_string",
+                        "ci_action_on_sys_update_intent_string"]
 
     carrier_id_list = CarrierIdList()
     carrier_attribute_map = {}
