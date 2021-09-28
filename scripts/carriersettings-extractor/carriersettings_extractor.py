@@ -64,15 +64,19 @@ def main():
                         "smart_forwarding_config_component_name_string",
                         "wfc_emergency_address_carrier_app_string",
                         # Always allow editing APNs
-                        "apn_expand_bool",
                         "allow_adding_apns_bool",
-                        "read_only_apn_types_string_array",
+                        "apn_expand_bool",
+                        "hide_ims_apn_bool",
+                        "hide_preset_apn_details_bool",
                         "read_only_apn_fields_string_array",
+                        "read_only_apn_types_string_array",
+                        "show_apn_setting_cdma_bool"
                         # Disable intents to carrier apps post-update
                         "ci_action_on_sys_update_bool",
                         "ci_action_on_sys_update_extra_string",
                         "ci_action_on_sys_update_extra_val_string",
-                        "ci_action_on_sys_update_intent_string"]
+                        "ci_action_on_sys_update_intent_string"
+                        ]
 
     carrier_id_list = CarrierIdList()
     carrier_attribute_map = {}
