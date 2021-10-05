@@ -102,6 +102,8 @@ def main():
                 settings = MultiCarrierSettings()
                 settings.ParseFromString(pb.read())
                 for setting in settings.setting:
+                    if setting.canonicalName == 'telenor_se':
+                        continue
                     assert setting.canonicalName not in all_settings
                     all_settings[setting.canonicalName] = setting
             else:
