@@ -45,21 +45,6 @@ declare -ra VENDOR_SKIP_FILES=(
   "bin/toybox_vendor"
   "bin/toolbox"
   "bin/grep"
-  "overlay/DisplayCutoutEmulationCorner/DisplayCutoutEmulationCornerOverlay.apk"
-  "overlay/DisplayCutoutEmulationDouble/DisplayCutoutEmulationDoubleOverlay.apk"
-  "overlay/DisplayCutoutEmulationTall/DisplayCutoutEmulationTallOverlay.apk"
-  "overlay/DisplayCutoutNoCutout/NoCutoutOverlay.apk"
-  "overlay/framework-res__auto_generated_rro.apk"
-  "overlay/SysuiDarkTheme/SysuiDarkThemeOverlay.apk"
-  "overlay/framework-res__auto_generated_rro_vendor.apk"
-  "overlay/NfcNci__auto_generated_rro_vendor.apk"
-  "overlay/SettingsProvider__auto_generated_rro_vendor.apk"
-  "overlay/Bluetooth__auto_generated_rro_vendor.apk"
-  "overlay/TeleService__auto_generated_rro_vendor.apk"
-  "overlay/SystemUIGoogle__auto_generated_rro_vendor.apk"
-  "overlay/SettingsProviderTest__auto_generated_rro_vendor.apk"
-  "overlay/SettingsGoogle__auto_generated_rro_vendor.apk"
-  "overlay/HbmSVManager__auto_generated_rro_vendor.apk"
 )
 
 # Files to skip from vendor partition when parsing factory images (for naked config only)
